@@ -1,26 +1,136 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ===================================================
+   DESIGN TOKENS — Minimalist Digital Garden
+   =================================================== */
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-inter: "Inter", sans-serif;
+
+  /* Colors */
+  --bg:        #fafafa;
+  --surface:   #ffffff;
+  --border:    #e5e7eb;   /* gray-200 */
+  --accent:    #2563eb;   /* blue-600 */
+  
+  /* Text */
+  --text-primary:   #111111;
+  --text-secondary: #4b5563;  /* gray-600 */
+  --text-muted:     #6b7280;  /* gray-500 */
+
+  /* Layout */
+  --container: 48rem; /* max-w-3xl */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ===================================================
+   BASE RESET
+   =================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+  
+  .mask-edges {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   }
 }
 
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03; /* Very subtle grain */
+}
+
+/* ===================================================
+   SELECTION & FOCUS
+   =================================================== */
+
+::selection {
+  background: rgba(37, 99, 235, 0.2); /* blue-600 with opacity */
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ===================================================
+   UTILITY CLASSES
+   =================================================== */
+
+/* Section container — max-w-3xl */
+.container {
+  max-width: var(--container);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Typography scale */
+h1, h2, h3, h4 {
+  font-weight: 800; /* extrabold */
+  letter-spacing: -0.025em; /* tracking-tight */
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+/* Divider */
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--border);
+  margin: 3rem 0;
 }
