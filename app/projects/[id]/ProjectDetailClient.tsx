@@ -437,6 +437,7 @@ export default function ProjectDetailClient({ project, prev, next }: Props) {
         )}
 
         {/* ── Responsive Device Showcase ── */}
+        {project.deviceScreenshots && (project.deviceScreenshots.desktop.length > 0 || project.deviceScreenshots.tablet.length > 0 || project.deviceScreenshots.mobile.length > 0) && (
         <section className="space-y-6">
           <motion.div
             variants={fadeUp}
@@ -457,6 +458,7 @@ export default function ProjectDetailClient({ project, prev, next }: Props) {
 
           <DeviceShowcase project={project} />
         </section>
+        )}
 
         {/* ── Key Outcomes ── */}
         <section className="space-y-6">

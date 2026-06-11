@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { experiences } from "@/data/portfolio";
 
 const fadeUp = {
@@ -11,6 +12,8 @@ const fadeUp = {
 };
 
 export default function Experience() {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   return (
     <section id="experience" className="py-24 bg-white dark:bg-zinc-950 transition-colors duration-300">
       <div className="max-w-3xl mx-auto px-6 w-full">
@@ -73,11 +76,15 @@ export default function Experience() {
                 <div className="mt-6 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 scrollbar-hide"
                      style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
                   {exp.images.map((img, idx) => (
-                    <div key={idx} className="snap-start shrink-0 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800/80">
+                    <div 
+                      key={idx} 
+                      onClick={() => setSelectedImage(img)}
+                      className="snap-start shrink-0 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800/80 cursor-pointer"
+                    >
                       <img 
                         src={img} 
                         alt={`${exp.organization} highlight ${idx + 1}`} 
-                        className="w-64 h-40 sm:w-72 sm:h-44 object-cover hover:opacity-90 transition-opacity duration-300" 
+                        className="w-64 h-40 sm:w-72 sm:h-44 object-cover hover:opacity-90 hover:scale-105 transition-all duration-300" 
                       />
                     </div>
                   ))}
@@ -87,6 +94,39 @@ export default function Experience() {
           ))}
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-8 cursor-zoom-out"
+          >
+            <motion.img
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              src={selectedImage}
+              alt="Enlarged view"
+              className="max-w-full max-h-full rounded-xl object-contain shadow-2xl cursor-default"
+              onClick={(e) => e.stopPropagation()} 
+            />
+            {/* Close Button */}
+            <button 
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors"
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

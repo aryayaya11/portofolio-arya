@@ -53,7 +53,7 @@ function Typewriter({ words }: { words: string[] }) {
   return (
     <span className="inline-block min-w-[10px]">
       {words[index].substring(0, subIndex)}
-      <span className="animate-pulse text-blue-600 dark:text-blue-400">|</span>
+      <span className="animate-pulse text-zinc-900 dark:text-white">|</span>
     </span>
   );
 }
@@ -72,32 +72,21 @@ export default function Hero() {
   return (
     <section 
       id="hero" 
-      className="relative flex flex-col justify-center min-h-screen pt-20 pb-32 overflow-hidden bg-white dark:bg-zinc-950 transition-colors duration-300"
+      className="relative flex items-center min-h-screen pt-20 pb-32 overflow-hidden bg-white dark:bg-zinc-950 transition-colors duration-300"
     >
-      <div className="max-w-3xl mx-auto px-6 w-full flex flex-col items-center text-center relative z-10">
+      <div className="max-w-7xl mx-auto px-6 w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-20 relative z-10">
+        
+        {/* LEFT: Text Content */}
         <motion.div
           variants={containerVariants}
           initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true }}
-          className="max-w-2xl relative flex flex-col items-center"
+          animate="whileInView"
+          className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left order-2 lg:order-1"
         >
-          {/* Profile Image */}
-          <motion.div
-            variants={itemVariants}
-            className="mb-8 relative inline-block group"
-          >
-            <img 
-              src={personalInfo.profileImage} 
-              alt={personalInfo.name} 
-              className="w-28 h-28 rounded-full object-cover border border-zinc-200 dark:border-zinc-800 relative z-10 transition-transform duration-500 group-hover:scale-105"
-            />
-          </motion.div>
-
           {/* Name */}
           <motion.h1
             variants={itemVariants}
-            className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-zinc-900 dark:text-white tracking-tight mb-4 uppercase transition-colors duration-300"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-zinc-900 dark:text-white tracking-tight mb-4 uppercase transition-colors duration-300"
           >
             {personalInfo.name}
           </motion.h1>
@@ -112,13 +101,13 @@ export default function Hero() {
 
           <motion.p
             variants={itemVariants}
-            className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mb-10 max-w-xl mx-auto transition-colors duration-300"
+            className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mb-10 transition-colors duration-300"
           >
-            Managing Rp170M+ in operational funds and coordinating large-scale programs, while developing data-driven business solutions in {personalInfo.location}.
+            Combining strategic financial leadership with advanced analytics to engineer robust, data-driven solutions in {personalInfo.location}.
           </motion.p>
 
           {/* Dual CTAs */}
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center gap-4 relative z-20 w-full sm:w-auto">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto relative z-20">
             <a
               href="#projects"
               onClick={handleScroll}
@@ -139,6 +128,26 @@ export default function Hero() {
             </a>
           </motion.div>
         </motion.div>
+
+        {/* RIGHT: Image */}
+        <div className="w-full lg:w-1/2 flex justify-center lg:justify-end order-1 lg:order-2">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="relative w-full max-w-sm sm:max-w-md"
+          >
+            <div className="aspect-[4/5] w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-200 dark:bg-zinc-800 shadow-2xl relative z-10 group">
+              <img 
+                src="/about/about-4.jpg" 
+                alt={personalInfo.name} 
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+              />
+            </div>
+            {/* Decorative background blur */}
+            <div className="absolute inset-0 bg-zinc-500/10 dark:bg-zinc-400/10 blur-3xl rounded-full -z-10 transform scale-110 translate-y-10 transition-opacity duration-500 group-hover:opacity-50"></div>
+          </motion.div>
+        </div>
       </div>
 
       {/* Scroll Indicator */}

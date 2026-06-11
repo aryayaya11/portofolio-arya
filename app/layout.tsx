@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import CustomCursor from "@/components/CustomCursor";
 import { BackToTop } from "@/components/BackToTop";
+import GlobalClickSound from "@/components/GlobalClickSound";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -67,6 +68,7 @@ export default function RootLayout({
         >
           <ThemeToggle />
           <CustomCursor />
+          <GlobalClickSound />
           {children}
           <BackToTop />
         </ThemeProvider>

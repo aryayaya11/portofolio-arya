@@ -6,16 +6,15 @@ import { projects } from "@/data/portfolio";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-const FILTERS = ["All", "Geospatial Analytics", "Insurance Analytics", "Financial Analytics", "Business Intelligence", "Business Analytics", "Predictive Analytics", "Natural Language Processing"];
+const FILTERS = ["All", "Geospatial Analytics", "Insurance Analytics", "Predictive Analytics", "Business Intelligence", "NLP & Text Mining", "Machine Learning"];
 const FILTER_LABELS: Record<string, string> = {
   "All": "All",
   "Geospatial Analytics": "Geospatial",
   "Insurance Analytics": "Insurance",
-  "Financial Analytics": "Finance",
+  "Predictive Analytics": "Analytics",
   "Business Intelligence": "BI",
-  "Business Analytics": "Analytics",
-  "Predictive Analytics": "ML",
-  "Natural Language Processing": "NLP",
+  "NLP & Text Mining": "NLP",
+  "Machine Learning": "ML",
 };
 
 const container = {
@@ -119,7 +118,9 @@ export default function Projects() {
                 <div className="p-6 flex flex-col grow">
                   <div className="mb-4">
                     <h3 className="text-xl font-bold text-zinc-900 dark:text-white leading-snug group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
-                      {p.title}
+                      <Link href={`/projects/${p.id}`} className="hover:underline underline-offset-4 decoration-zinc-400/50">
+                        {p.title}
+                      </Link>
                     </h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2 leading-relaxed line-clamp-2">
                       {p.description}

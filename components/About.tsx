@@ -1,16 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { personalInfo } from "@/data/portfolio";
 
 const ABOUT_IMAGES = [
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop",
+  "/about/about-1.jpg",
+  "/about/about-2.jpg",
+  "/about/about-3.jpg",
 ];
 
-const PARAGRAPHS = [
-  "Hi, I'm Arya. I'm a Data Scientist and Financial Manager passionate about bridging the gap between analytical rigor and organizational strategy. I believe that data isn't just about numbers; it's about telling a compelling story that drives real impact.",
-  "During my undergraduate studies, I've had the privilege of managing over Rp170M in operational funds and coordinating large-scale initiatives. My background in Data Science equips me with the technical foundation to build predictive models, optimize resource allocation, and extract actionable insights from complex datasets.",
-  "Beyond the code and spreadsheets, I thrive in leadership roles where I can foster collaboration and mentor cross-functional teams. Whether it's developing an interactive economic dashboard or streamlining financial reporting, my goal is always to deliver scalable, data-driven solutions that matter."
-];
+// Using dynamic about text from portfolio.ts
+const PARAGRAPHS = personalInfo.about.split('\n\n');
 
 const fadeUp = {
   initial: { opacity: 0, y: 15 },
@@ -20,6 +21,16 @@ const fadeUp = {
 };
 
 export default function About() {
+  const [positions, setPositions] = useState([0, 1, 2]); // [img0Pos, img1Pos, img2Pos]
+
+  const handleNextPhoto = () => {
+    setPositions((prev) => prev.map((pos) => (pos - 1 + 3) % 3));
+  };
+
+  const handlePrevPhoto = () => {
+    setPositions((prev) => prev.map((pos) => (pos + 1) % 3));
+  };
+
   return (
     <section id="about" className="py-24 lg:py-32 bg-zinc-50 dark:bg-zinc-900 transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-6 w-full">
@@ -37,19 +48,45 @@ export default function About() {
 
         <div className="flex flex-col md:flex-row gap-12 lg:gap-16 items-start">
           
-          {/* LEFT: Single Clean Image */}
+          {/* LEFT: Stacked Photo Cards */}
           <motion.div 
             variants={fadeUp}
             initial="initial"
             whileInView="whileInView"
             transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full md:w-5/12 shrink-0"
+            className="w-full md:w-5/12 shrink-0 flex justify-center md:justify-start"
           >
-            <div className="aspect-[4/5] w-full rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-200 dark:bg-zinc-800">
-              <img 
-                src={ABOUT_IMAGES[0]} 
-                alt="Arya Putra Permana" 
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" 
+            <div className="relative w-full aspect-[3/4] max-w-[280px] sm:max-w-[320px] group mt-4">
+              {ABOUT_IMAGES.map((src, idx) => {
+                const pos = positions[idx];
+                let positionClasses = "";
+                if (pos === 0) positionClasses = "z-30 rotate-[-2deg] group-hover:rotate-0 group-hover:-translate-y-2 opacity-100 shadow-2xl";
+                else if (pos === 1) positionClasses = "z-20 rotate-[6deg] translate-y-3 group-hover:rotate-[12deg] group-hover:translate-x-8 opacity-90 group-hover:opacity-100 shadow-xl";
+                else if (pos === 2) positionClasses = "z-10 rotate-[-8deg] translate-y-6 group-hover:rotate-[-14deg] group-hover:-translate-x-8 opacity-70 group-hover:opacity-100 shadow-xl";
+
+                return (
+                  <div 
+                    key={idx} 
+                    className={`absolute inset-0 rounded-2xl overflow-hidden border-8 border-white dark:border-zinc-900 transition-all duration-500 ease-out ${positionClasses}`}
+                  >
+                    <img src={src} alt={`About ${idx + 1}`} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 pointer-events-none" />
+                  </div>
+                );
+              })}
+
+              {/* Invisible overlay to capture swipe gestures */}
+              <motion.div
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={(e, info) => {
+                  if (info.offset.x < -50) {
+                    handleNextPhoto();
+                  } else if (info.offset.x > 50) {
+                    handlePrevPhoto();
+                  }
+                }}
+                className="absolute inset-0 z-50 cursor-grab active:cursor-grabbing"
               />
             </div>
           </motion.div>
