@@ -36,7 +36,7 @@ export default function Contact() {
             </h2>
           </div>
           
-          <div className="flex flex-col sm:flex-row justify-center flex-wrap gap-6 sm:gap-8">
+          <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-8">
             <a
               href={`mailto:${personalInfo.email}`}
               className="flex items-center gap-3 text-base font-medium text-zinc-600 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"

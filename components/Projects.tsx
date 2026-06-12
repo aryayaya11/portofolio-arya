@@ -77,7 +77,7 @@ export default function Projects() {
           </div>
 
           {/* Filter tabs */}
-          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Project filters">
+          <div className="flex overflow-x-auto md:flex-wrap gap-2 pb-2 md:pb-0 scrollbar-hide max-w-full" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }} role="tablist" aria-label="Project filters">
             {FILTERS.map((f) => (
               <button
                 key={f}
@@ -85,7 +85,7 @@ export default function Projects() {
                 role="tab"
                 aria-selected={activeFilter === f}
                 onClick={() => setActiveFilter(f)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-300 ${
+                className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-300 ${
                   activeFilter === f
                     ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900"
                     : "bg-white dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-200"

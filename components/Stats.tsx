@@ -25,7 +25,7 @@ function Kpi({ label, value, suffix = "", prefix = "", decimals = 0, index }: Kp
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: index * 0.07 }}
-      className="flex flex-col gap-1 py-2 px-4"
+      className="flex flex-col items-center justify-center gap-1 py-2 px-1 sm:px-4 text-center"
     >
       <span className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight tabular-nums">
         {prefix}{displayed}{suffix}
@@ -41,9 +41,12 @@ export default function Stats() {
   return (
     <section aria-label="Statistics" className="py-12 border-y border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 transition-colors duration-300">
       <div className="max-w-5xl mx-auto px-6 md:px-8 w-full">
-        <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-between items-center gap-x-4 gap-y-8">
+        <div className="grid grid-cols-2 md:flex md:flex-nowrap md:justify-between items-start md:items-center gap-x-4 gap-y-8">
           {stats.map((stat, i) => (
-            <div key={stat.label} className="text-center">
+            <div 
+              key={stat.label} 
+              className={`flex justify-center ${i === stats.length - 1 && stats.length % 2 !== 0 ? 'col-span-2 md:col-auto' : ''}`}
+            >
               <Kpi
                 label={stat.label}
                 value={stat.value}

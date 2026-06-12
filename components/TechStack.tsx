@@ -18,10 +18,15 @@ export default function TechStack() {
   const allTechIcons = projects.flatMap(p => p.techIcons || []);
   const uniqueTechIcons = Array.from(new Map(allTechIcons.map(item => [item.name, item])).values());
 
-  // Split into two rows
-  const half = Math.ceil(uniqueTechIcons.length / 2);
-  const row1 = uniqueTechIcons.slice(0, half);
-  const row2 = uniqueTechIcons.slice(half);
+  // Split into 4 chunks for dynamic rows
+  const quarter = Math.ceil(uniqueTechIcons.length / 4);
+  const q1 = uniqueTechIcons.slice(0, quarter);
+  const q2 = uniqueTechIcons.slice(quarter, quarter * 2);
+  const q3 = uniqueTechIcons.slice(quarter * 2, quarter * 3);
+  const q4 = uniqueTechIcons.slice(quarter * 3);
+
+  const desktopRow1 = [...q1, ...q2];
+  const desktopRow2 = [...q3, ...q4];
 
   return (
     <section id="tech-stack" className="min-h-screen flex flex-col justify-center py-24 md:py-32 overflow-hidden bg-white dark:bg-zinc-950 transition-colors duration-300">
@@ -51,51 +56,46 @@ export default function TechStack() {
           <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-white dark:from-zinc-950 to-transparent z-10 pointer-events-none"></div>
           <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-white dark:from-zinc-950 to-transparent z-10 pointer-events-none"></div>
 
-          <div className="flex flex-col gap-3 sm:gap-4">
-            {/* Row 1 - Scrolls Left */}
-            <motion.div
-              className="flex w-max gap-3 sm:gap-4"
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
-            >
-              {[...row1, ...row1, ...row1].map((tech, idx) => (
-                <div
-                  key={`r1-${tech.name}-${idx}`}
-                  className="group flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-300 shrink-0"
-                >
-                  <img
-                    src={tech.iconUrl}
-                    alt={tech.name}
-                    className="w-5 h-5 sm:w-6 sm:h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
-                  />
-                  <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 tracking-wide">{tech.name}</span>
-                </div>
-              ))}
-            </motion.div>
+          {/* Desktop Layout - 2 Rows */}
+          <div className="hidden md:flex flex-col gap-4">
+            <MarqueeRow items={desktopRow1} direction="left" duration={100} />
+            <MarqueeRow items={desktopRow2} direction="right" duration={100} />
+          </div>
 
-            {/* Row 2 - Scrolls Right */}
-            <motion.div
-              className="flex w-max gap-3 sm:gap-4"
-              animate={{ x: ["-50%", "0%"] }}
-              transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
-            >
-              {[...row2, ...row2, ...row2].map((tech, idx) => (
-                <div
-                  key={`r2-${tech.name}-${idx}`}
-                  className="group flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-300 shrink-0"
-                >
-                  <img
-                    src={tech.iconUrl}
-                    alt={tech.name}
-                    className="w-5 h-5 sm:w-6 sm:h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
-                  />
-                  <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 tracking-wide">{tech.name}</span>
-                </div>
-              ))}
-            </motion.div>
+          {/* Mobile Layout - 4 Rows */}
+          <div className="flex md:hidden flex-col gap-3">
+            <MarqueeRow items={q1} direction="left" duration={50} />
+            <MarqueeRow items={q2} direction="right" duration={50} />
+            <MarqueeRow items={q3} direction="left" duration={50} />
+            <MarqueeRow items={q4} direction="right" duration={50} />
           </div>
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function MarqueeRow({ items, direction, duration }: { items: any[], direction: "left" | "right", duration: number }) {
+  if (items.length === 0) return null;
+  return (
+    <motion.div
+      className="flex w-max gap-3 sm:gap-4"
+      animate={{ x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"] }}
+      transition={{ duration, repeat: Infinity, ease: "linear" }}
+    >
+      {[...items, ...items, ...items].map((tech, idx) => (
+        <div
+          key={`${tech.name}-${idx}`}
+          className="group flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-300 shrink-0"
+        >
+          <img
+            src={tech.iconUrl}
+            alt={tech.name}
+            className="w-5 h-5 sm:w-6 sm:h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+          />
+          <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 tracking-wide">{tech.name}</span>
+        </div>
+      ))}
+    </motion.div>
   );
 }

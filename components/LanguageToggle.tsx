@@ -15,7 +15,7 @@ export function LanguageToggle() {
 
   if (!mounted) {
     return (
-      <div className="fixed top-4 right-[84px] z-[100] w-20 h-12 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm" />
+      <div className="fixed bottom-6 left-[84px] md:bottom-auto md:left-auto md:top-4 md:right-[84px] z-[100] w-20 h-12 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm" />
     );
   }
 
@@ -26,7 +26,7 @@ export function LanguageToggle() {
   return (
     <div
       onClick={toggleLanguage}
-      className="fixed top-4 right-[84px] z-[100] flex items-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full p-1 shadow-sm h-12 w-20 cursor-pointer hover:shadow-md transition-shadow select-none"
+      className="fixed bottom-6 left-[84px] md:bottom-auto md:left-auto md:top-4 md:right-[84px] z-[100] flex items-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full p-1 shadow-sm h-12 w-20 cursor-pointer hover:shadow-md transition-shadow select-none"
       aria-label="Toggle language"
       title={language === "en" ? "Switch to Indonesian" : "Ganti ke Bahasa Inggris"}
     >

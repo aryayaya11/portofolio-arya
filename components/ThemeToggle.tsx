@@ -16,7 +16,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="fixed top-4 right-6 z-[100] w-12 h-12 rounded-full bg-white border border-zinc-200 shadow-sm" />
+      <div className="fixed bottom-6 left-6 md:bottom-auto md:left-auto md:top-4 md:right-6 z-[100] w-12 h-12 rounded-full bg-white border border-zinc-200 shadow-sm" />
     );
   }
 
@@ -27,7 +27,7 @@ export function ThemeToggle() {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="fixed top-4 right-6 z-[100] w-12 h-12 flex items-center justify-center rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+      className="fixed bottom-6 left-6 md:bottom-auto md:left-auto md:top-4 md:right-6 z-[100] w-12 h-12 flex items-center justify-center rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
       aria-label="Toggle theme"
     >
       {theme === "dark" ? (

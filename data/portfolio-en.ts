@@ -5,7 +5,7 @@
 
 export const personalInfo = {
   name: "Arya Putra Permana",
-  shortName: "Arya",
+  shortName: "Arya Putra",
   initials: "APP",
   location: "Surabaya, Indonesia",
   university: "Universitas Airlangga",
