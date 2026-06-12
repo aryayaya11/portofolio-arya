@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { stats } from "@/data/portfolio";
+import { portfolioData } from "@/data/portfolio";
+import { useLanguage } from "@/components/LanguageContext";
 import { useCounter } from "@/lib/useCounter";
 
 interface KpiProps {
@@ -14,7 +15,7 @@ interface KpiProps {
 }
 
 function Kpi({ label, value, suffix = "", prefix = "", decimals = 0, index }: KpiProps) {
-  const { count, ref } = useCounter({ end: value, duration: 1800, decimals });
+  const { count, ref } = useCounter({ end: value, duration: 3500, decimals });
   const displayed = decimals > 0 ? count.toFixed(decimals) : Math.floor(count).toString();
 
   return (
@@ -35,10 +36,12 @@ function Kpi({ label, value, suffix = "", prefix = "", decimals = 0, index }: Kp
 }
 
 export default function Stats() {
+  const { language } = useLanguage();
+  const { stats } = portfolioData[language];
   return (
-    <section aria-label="Statistics" className="border-y border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 transition-colors duration-300">
-      <div className="max-w-4xl mx-auto px-6 w-full">
-        <div className="flex flex-wrap justify-center sm:justify-between gap-x-8 gap-y-12 py-12">
+    <section aria-label="Statistics" className="py-12 border-y border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 transition-colors duration-300">
+      <div className="max-w-5xl mx-auto px-6 md:px-8 w-full">
+        <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-between items-center gap-x-4 gap-y-8">
           {stats.map((stat, i) => (
             <div key={stat.label} className="text-center">
               <Kpi

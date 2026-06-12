@@ -1,4 +1,5 @@
-import { projects } from "@/data/portfolio";
+import { portfolioData } from "@/data/portfolio";
+const { projects } = portfolioData.en;
 import ProjectDetailClient from "./ProjectDetailClient";
 import { notFound } from "next/navigation";
 

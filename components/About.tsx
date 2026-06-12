@@ -1,8 +1,10 @@
 "use client";
 
+
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { personalInfo } from "@/data/portfolio";
+import { portfolioData } from "@/data/portfolio";
+import { useLanguage } from "@/components/LanguageContext";
 
 const ABOUT_IMAGES = [
   "/about/about-1.jpg",
@@ -10,8 +12,7 @@ const ABOUT_IMAGES = [
   "/about/about-3.jpg",
 ];
 
-// Using dynamic about text from portfolio.ts
-const PARAGRAPHS = personalInfo.about.split('\n\n');
+// Paragraphs will be dynamically computed inside the component
 
 const fadeUp = {
   initial: { opacity: 0, y: 15 },
@@ -21,6 +22,10 @@ const fadeUp = {
 };
 
 export default function About() {
+  const { language } = useLanguage();
+  const { personalInfo } = portfolioData[language];
+  const PARAGRAPHS = personalInfo.about.split('\n\n');
+
   const [positions, setPositions] = useState([0, 1, 2]); // [img0Pos, img1Pos, img2Pos]
 
   const handleNextPhoto = () => {
@@ -31,9 +36,10 @@ export default function About() {
     setPositions((prev) => prev.map((pos) => (pos + 1) % 3));
   };
 
+
   return (
-    <section id="about" className="py-24 lg:py-32 bg-zinc-50 dark:bg-zinc-900 transition-colors duration-300">
-      <div className="max-w-4xl mx-auto px-6 w-full">
+    <section id="about" className="min-h-screen flex flex-col justify-center py-24 md:py-32 bg-zinc-50 dark:bg-zinc-900 transition-colors duration-300">
+      <div className="max-w-5xl mx-auto px-6 md:px-8 w-full">
         
         <motion.div
           variants={fadeUp}
@@ -41,8 +47,11 @@ export default function About() {
           whileInView="whileInView"
           className="mb-16"
         >
-          <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
-            About Me
+          <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-2">
+            {language === 'en' ? 'Get to Know Me' : 'Mengenal Saya'}
+          </p>
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
+            {language === 'en' ? 'About Me' : 'Tentang Saya'}
           </h2>
         </motion.div>
 

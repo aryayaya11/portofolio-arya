@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { personalInfo } from "@/data/portfolio";
+import { portfolioData } from "@/data/portfolio";
+const { personalInfo } = portfolioData.en;
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageProvider } from "@/components/LanguageContext";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import CustomCursor from "@/components/CustomCursor";
 import { BackToTop } from "@/components/BackToTop";
 import GlobalClickSound from "@/components/GlobalClickSound";
@@ -59,18 +62,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} scroll-smooth`} suppressHydrationWarning>
-      <body className="font-sans bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased min-h-screen transition-colors duration-300">
+      <body className="font-sans bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased min-h-screen transition-colors duration-300" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <ThemeToggle />
-          <CustomCursor />
-          <GlobalClickSound />
-          {children}
-          <BackToTop />
+          <LanguageProvider>
+            <LanguageToggle />
+            <ThemeToggle />
+            <CustomCursor />
+            <GlobalClickSound />
+            {children}
+            <BackToTop />
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,7 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { skills } from "@/data/portfolio";
+import { portfolioData } from "@/data/portfolio";
+import { useLanguage } from "@/components/LanguageContext";
+import { Code2, BarChart3, BrainCircuit, TrendingUp, Wrench, Star, LayoutGrid } from "lucide-react";
+
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  "Programming": <Code2 className="w-6 h-6 text-zinc-400 dark:text-zinc-500" />,
+  "Data Analytics": <BarChart3 className="w-6 h-6 text-zinc-400 dark:text-zinc-500" />,
+  "Machine Learning": <BrainCircuit className="w-6 h-6 text-zinc-400 dark:text-zinc-500" />,
+  "Business Intelligence": <TrendingUp className="w-6 h-6 text-zinc-400 dark:text-zinc-500" />,
+  "Tools": <Wrench className="w-6 h-6 text-zinc-400 dark:text-zinc-500" />,
+  "Soft Skills": <Star className="w-6 h-6 text-zinc-400 dark:text-zinc-500" />,
+};
+
+const getCategoryIcon = (category: string) => CATEGORY_ICONS[category] || <LayoutGrid className="w-6 h-6 text-zinc-400 dark:text-zinc-500" />;
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 16 },
@@ -11,16 +24,18 @@ const fadeUp = (delay = 0) => ({
 });
 
 export default function Skills() {
+  const { language } = useLanguage();
+  const { skills } = portfolioData[language];
   return (
-    <section id="skills" className="py-24 bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
-      <div className="max-w-6xl mx-auto px-6 md:px-8">
+    <section id="skills" className="min-h-screen flex flex-col justify-center py-24 bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
+      <div className="max-w-5xl mx-auto px-6 md:px-8 w-full">
         {/* Header */}
         <motion.div {...fadeUp(0)} className="mb-16">
           <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-2">
-            Skills
+            {language === 'en' ? 'Skills' : 'Keahlian'}
           </p>
           <h2 className="text-4xl sm:text-5xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
-            Technical Expertise
+            {language === 'en' ? 'Technical Expertise' : 'Keahlian Teknis'}
           </h2>
         </motion.div>
 
@@ -34,7 +49,9 @@ export default function Skills() {
             >
               {/* Category label */}
               <div className="flex items-center gap-3">
-                <span className="text-xl leading-none">{data.icon}</span>
+                <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-2 rounded-lg shadow-sm">
+                  {getCategoryIcon(category)}
+                </div>
                 <span className="text-base font-bold text-zinc-900 dark:text-zinc-200">{category}</span>
               </div>
 

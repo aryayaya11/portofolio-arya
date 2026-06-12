@@ -4,6 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/data/portfolio";
+import { portfolioData } from "@/data/portfolio";
+import { useLanguage } from "@/components/LanguageContext";
 import { TechIconGrid } from "@/components/DeviceMockup";
 import { ArrowLeft, ExternalLink, ChevronRight, GitBranch, Monitor, Tablet, Smartphone, ChevronLeft } from "lucide-react";
 
@@ -102,10 +104,12 @@ function DeviceShowcase({ project }: { project: Project }) {
 
   const handleDragEnd = (event: any, info: any) => {
     const swipeThreshold = 50;
-    if (info.offset.x < -swipeThreshold && imgIndex < images.length - 1) {
-      setImgIndex(imgIndex + 1);
-    } else if (info.offset.x > swipeThreshold && imgIndex > 0) {
-      setImgIndex(imgIndex - 1);
+    if (images.length <= 1) return;
+    
+    if (info.offset.x < -swipeThreshold) {
+      setImgIndex((prev) => (prev + 1) % images.length);
+    } else if (info.offset.x > swipeThreshold) {
+      setImgIndex((prev) => (prev - 1 + images.length) % images.length);
     }
   };
 
@@ -147,9 +151,8 @@ function DeviceShowcase({ project }: { project: Project }) {
         {/* Image counter */}
         <div className="ml-auto flex items-center gap-2">
           <button
-            onClick={() => setImgIndex(Math.max(0, imgIndex - 1))}
-            disabled={imgIndex === 0}
-            className="p-1 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white disabled:opacity-20 transition-colors"
+            onClick={() => setImgIndex((prev) => (prev - 1 + images.length) % images.length)}
+            className="p-1 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -157,9 +160,8 @@ function DeviceShowcase({ project }: { project: Project }) {
             {imgIndex + 1} / {images.length}
           </span>
           <button
-            onClick={() => setImgIndex(Math.min(images.length - 1, imgIndex + 1))}
-            disabled={imgIndex === images.length - 1}
-            className="p-1 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white disabled:opacity-20 transition-colors"
+            onClick={() => setImgIndex((prev) => (prev + 1) % images.length)}
+            className="p-1 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
@@ -172,16 +174,14 @@ function DeviceShowcase({ project }: { project: Project }) {
         {images.length > 1 && (
           <>
             <button
-              onClick={() => setImgIndex(Math.max(0, imgIndex - 1))}
-              disabled={imgIndex === 0}
-              className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-white/95 dark:bg-zinc-900/95 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 shadow-md opacity-0 group-hover/showcase:opacity-100 disabled:!opacity-0 transition-all duration-300 z-30 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white"
+              onClick={() => setImgIndex((prev) => (prev - 1 + images.length) % images.length)}
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-white/95 dark:bg-zinc-900/95 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 shadow-md opacity-0 group-hover/showcase:opacity-100 transition-all duration-300 z-30 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white"
             >
               <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
             <button
-              onClick={() => setImgIndex(Math.min(images.length - 1, imgIndex + 1))}
-              disabled={imgIndex === images.length - 1}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-white/95 dark:bg-zinc-900/95 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 shadow-md opacity-0 group-hover/showcase:opacity-100 disabled:!opacity-0 transition-all duration-300 z-30 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white"
+              onClick={() => setImgIndex((prev) => (prev + 1) % images.length)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-white/95 dark:bg-zinc-900/95 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 shadow-md opacity-0 group-hover/showcase:opacity-100 transition-all duration-300 z-30 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white"
             >
               <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
@@ -291,18 +291,26 @@ interface Props {
   next: Project | null;
 }
 
-export default function ProjectDetailClient({ project, prev, next }: Props) {
+export default function ProjectDetailClient({ project: initialProject, prev: initialPrev, next: initialNext }: Props) {
+  const { language } = useLanguage();
+  const { projects } = portfolioData[language];
+
+  // Derive localized projects
+  const project = projects.find((p) => p.id === initialProject.id) || initialProject;
+  const prev = initialPrev ? projects.find((p) => p.id === initialPrev.id) || initialPrev : null;
+  const next = initialNext ? projects.find((p) => p.id === initialNext.id) || initialNext : null;
+
   return (
     <main className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors duration-300">
       {/* Top Nav */}
       <div className="sticky top-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 transition-colors duration-300">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
           <Link
             href="/#projects"
             className="inline-flex items-center gap-2 text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Projects
+            {language === 'en' ? 'Back to Projects' : 'Kembali ke Proyek'}
           </Link>
           
           <div className="flex gap-3">
@@ -384,15 +392,15 @@ export default function ProjectDetailClient({ project, prev, next }: Props) {
             transition={{ delay: 0.12, duration: 0.6 }}
             className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white"
           >
-            Project Breakdown
+            {language === 'en' ? 'Project Breakdown' : 'Rincian Proyek'}
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <StepCard step="01" label="Problem" type="problem" delay={0.18}>
+            <StepCard step="01" label={language === 'en' ? 'Problem' : 'Masalah'} type="problem" delay={0.18}>
               <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">{parseMarkdown(project.problem)}</p>
             </StepCard>
 
-            <StepCard step="02" label="Action" type="action" delay={0.26}>
+            <StepCard step="02" label={language === 'en' ? 'Action' : 'Tindakan'} type="action" delay={0.26}>
               <ul className="space-y-3">
                 {project.action.map((a, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
@@ -403,7 +411,7 @@ export default function ProjectDetailClient({ project, prev, next }: Props) {
               </ul>
             </StepCard>
 
-            <StepCard step="03" label="Result" type="result" delay={0.34}>
+            <StepCard step="03" label={language === 'en' ? 'Result' : 'Hasil'} type="result" delay={0.34}>
               <ul className="space-y-3">
                 {project.result.map((r, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
@@ -426,7 +434,7 @@ export default function ProjectDetailClient({ project, prev, next }: Props) {
               transition={{ delay: 0.12, duration: 0.6 }}
               className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white"
             >
-              Featured Code
+              {language === 'en' ? 'Featured Code' : 'Kode Unggulan'}
             </motion.h2>
             <div className="flex flex-col gap-6">
               {project.codeSnippets.map((snippet, i) => (
@@ -448,10 +456,10 @@ export default function ProjectDetailClient({ project, prev, next }: Props) {
           >
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
-                Responsive Preview
+                {language === 'en' ? 'Responsive Preview' : 'Pratinjau Responsif'}
               </h2>
               <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
-                Switch between device views to explore the responsive design
+                {language === 'en' ? 'Switch between device views to explore the responsive design' : 'Ganti tampilan perangkat untuk menjelajahi desain responsif'}
               </p>
             </div>
           </motion.div>
@@ -469,7 +477,7 @@ export default function ProjectDetailClient({ project, prev, next }: Props) {
             transition={{ delay: 0.1, duration: 0.6 }}
             className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white"
           >
-            Key Outcomes
+            {language === 'en' ? 'Key Outcomes' : 'Hasil Utama'}
           </motion.h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {project.result.slice(0, 6).map((r, i) => (

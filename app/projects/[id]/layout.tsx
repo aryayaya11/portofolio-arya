@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { projects } from "@/data/portfolio";
+import { portfolioData } from "@/data/portfolio";
+const { projects } = portfolioData.en;
 
 export async function generateMetadata({
   params,
