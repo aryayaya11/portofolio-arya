@@ -4,7 +4,28 @@ import { useState, MouseEvent as ReactMouseEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { portfolioData } from "@/data/portfolio";
 import { useLanguage } from "@/components/LanguageContext";
-import { Award, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+export interface Certification {
+  id: string;
+  title: string;
+  issuer: string;
+  year: string;
+  images: string[];
+  topics: string[];
+  color: string;
+  badgeColor: string;
+}
+
+export interface Award {
+  id: string;
+  title: string;
+  achievement: string;
+  year: string;
+  images: string[];
+  color: string;
+  type: string;
+}
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 15 },
@@ -13,7 +34,7 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] as const },
 });
 
-function CertCard({ cert, language, onImageClick }: { cert: any, language: string, onImageClick: (images: string[], index: number) => void }) {
+function CertCard({ cert, onImageClick }: { cert: Certification, onImageClick: (images: string[], index: number) => void }) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const nextSlide = (e: ReactMouseEvent) => {
@@ -61,7 +82,7 @@ function CertCard({ cert, language, onImageClick }: { cert: any, language: strin
 
               {/* Dots Indicator */}
               <div className="absolute bottom-2 left-0 right-0 z-20 flex justify-center gap-1.5 pointer-events-none">
-                {cert.images.map((_: any, idx: number) => (
+                {cert.images.map((_: string, idx: number) => (
                   <div 
                     key={idx} 
                     className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentSlide ? 'w-3 bg-white' : 'w-1.5 bg-white/50'}`} 
@@ -97,7 +118,7 @@ function CertCard({ cert, language, onImageClick }: { cert: any, language: strin
   );
 }
 
-function AwardCard({ award, language, onImageClick }: { award: any, language: string, onImageClick: (images: string[], index: number) => void }) {
+function AwardCard({ award, onImageClick }: { award: Award, onImageClick: (images: string[], index: number) => void }) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const nextSlide = (e: ReactMouseEvent) => {
@@ -145,7 +166,7 @@ function AwardCard({ award, language, onImageClick }: { award: any, language: st
 
               {/* Dots Indicator */}
               <div className="absolute bottom-2 left-0 right-0 z-20 flex justify-center gap-1.5 pointer-events-none">
-                {award.images.map((_: any, idx: number) => (
+                {award.images.map((_: string, idx: number) => (
                   <div 
                     key={idx} 
                     className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentSlide ? 'w-3 bg-white' : 'w-1.5 bg-white/50'}`} 
@@ -199,7 +220,6 @@ export default function CertificationsAwards() {
                 <CertCard 
                   key={cert.id} 
                   cert={cert} 
-                  language={language} 
                   onImageClick={(images, index) => setSelectedImageContext({ images, index })} 
                 />
               ))}
@@ -219,7 +239,6 @@ export default function CertificationsAwards() {
                 <AwardCard 
                   key={award.id} 
                   award={award} 
-                  language={language} 
                   onImageClick={(images, index) => setSelectedImageContext({ images, index })} 
                 />
               ))}

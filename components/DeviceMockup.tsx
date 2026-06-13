@@ -3,12 +3,6 @@
 import { motion } from "framer-motion";
 import type { TechIcon } from "@/data/portfolio";
 
-interface DeviceMockupProps {
-  imageUrl: string;
-  type: "laptop" | "mobile";
-  title?: string;
-}
-
 export function LaptopMockup({ imageUrl, title }: { imageUrl: string; title?: string }) {
   return (
     <motion.div

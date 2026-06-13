@@ -12,7 +12,9 @@ export default function GlobalClickSound() {
     const playClickSound = () => {
       try {
         if (!audioCtx) {
-          const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+          const AudioContextClass =
+            window.AudioContext ||
+            (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
           if (!AudioContextClass) return;
           audioCtx = new AudioContextClass();
         }
@@ -40,7 +42,7 @@ export default function GlobalClickSound() {
 
         osc.start(t);
         osc.stop(t + 0.01);
-      } catch (err) {
+      } catch {
         // Silently fail if audio is not supported or blocked
       }
     };

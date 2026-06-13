@@ -1,9 +1,9 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import { portfolioData } from "@/data/portfolio";
 import { useLanguage } from "@/components/LanguageContext";
-import { ArrowRight, ChevronDown, Download, Mail } from "lucide-react";
+import { ArrowRight, ChevronDown, Download } from "lucide-react";
 import { useState, useEffect, MouseEvent as ReactMouseEvent } from "react";
 
 const containerVariants = {
@@ -39,9 +39,11 @@ function Typewriter({ words }: { words: string[] }) {
     }
 
     if (subIndex === 0 && reverse) {
-      setReverse(false);
-      setIndex((prev) => (prev + 1) % words.length);
-      return;
+      const timer = setTimeout(() => {
+        setReverse(false);
+        setIndex((prev) => (prev + 1) % words.length);
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     const timeout = setTimeout(() => {

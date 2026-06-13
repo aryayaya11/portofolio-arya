@@ -133,6 +133,7 @@ export type Project = {
   demo: string | null;
   liveUrl: string | null;
   featured?: boolean;
+  isConfidential?: boolean;
   gradient: string;
   icon?: string;
   deviceScreenshots?: DeviceScreenshots;
@@ -203,9 +204,9 @@ export const projects: Project[] = [
       "1,136 villages impacted",
       "3-tier risk classification",
     ],
-    github: null,
-    demo: null,
-    liveUrl: null,
+    github: "https://github.com/aryayaya11/aceh-landwatch",
+    demo: "https://aryaputrapermana.shinyapps.io/aceh-landwatch/",
+    liveUrl: "https://aryaputrapermana.shinyapps.io/aceh-landwatch/",
     featured: true,
     gradient: "from-green-600/20 via-emerald-600/10 to-transparent",
     icon: "🗺️",
@@ -242,6 +243,7 @@ export const projects: Project[] = [
   },
   {
     id: "axa-insurance-dashboard",
+    isConfidential: true,
     title: "AXA Insurance Executive Dashboard",
     category: "Insurance Analytics",
     categoryColor: "text-blue-400",
@@ -256,7 +258,6 @@ export const projects: Project[] = [
     deviceScreenshots: {
       desktop: [
         "/projects/axa-dashboard/desktop/cover.png",
-        "/projects/axa-dashboard/desktop/desktop-1.png",
         "/projects/axa-dashboard/desktop/desktop-2.png",
         "/projects/axa-dashboard/desktop/desktop-3.png",
       ],
@@ -464,7 +465,7 @@ filtered_df['Matrix Category'] = filtered_df.apply(
       "Pentaho ETL Pipeline",
       "Laravel Dashboard",
     ],
-    github: "https://github.com/arfiantifputri/stubu",
+    github: "https://github.com/aryayaya11/study-buddy",
     demo: null,
     liveUrl: null,
     featured: true,

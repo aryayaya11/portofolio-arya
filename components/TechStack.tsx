@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { portfolioData } from "@/data/portfolio";
+import { motion, useMotionValue, animate, type AnimationPlaybackControls } from "framer-motion";
+import { portfolioData, type TechIcon } from "@/data/portfolio";
 import { useLanguage } from "@/components/LanguageContext";
+import { useEffect, useRef, useState } from "react";
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -58,16 +59,16 @@ export default function TechStack() {
 
           {/* Desktop Layout - 2 Rows */}
           <div className="hidden md:flex flex-col gap-4">
-            <MarqueeRow items={desktopRow1} direction="left" duration={100} />
-            <MarqueeRow items={desktopRow2} direction="right" duration={100} />
+            <MarqueeRow items={desktopRow1} direction="left" speed={30} />
+            <MarqueeRow items={desktopRow2} direction="right" speed={30} />
           </div>
 
           {/* Mobile Layout - 4 Rows */}
           <div className="flex md:hidden flex-col gap-3">
-            <MarqueeRow items={q1} direction="left" duration={50} />
-            <MarqueeRow items={q2} direction="right" duration={50} />
-            <MarqueeRow items={q3} direction="left" duration={50} />
-            <MarqueeRow items={q4} direction="right" duration={50} />
+            <MarqueeRow items={q1} direction="left" speed={25} />
+            <MarqueeRow items={q2} direction="right" speed={25} />
+            <MarqueeRow items={q3} direction="left" speed={25} />
+            <MarqueeRow items={q4} direction="right" speed={25} />
           </div>
         </motion.div>
       </div>
@@ -75,27 +76,113 @@ export default function TechStack() {
   );
 }
 
-function MarqueeRow({ items, direction, duration }: { items: any[], direction: "left" | "right", duration: number }) {
+function MarqueeRow({ items, direction, speed = 30 }: { items: TechIcon[], direction: "left" | "right", speed?: number }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const controlsRef = useRef<AnimationPlaybackControls | null>(null);
+  const x = useMotionValue(0);
+  const [width, setWidth] = useState(0);
+  const isDragging = useRef(false);
+  const startAnimationRef = useRef<(from: number) => void>(() => {});
+
+  useEffect(() => {
+    if (!containerRef.current || items.length === 0) return;
+
+    const calculateWidth = () => {
+      // Total scrollWidth divided by 3 because we copy items 3 times
+      const w = containerRef.current!.scrollWidth / 3;
+      setWidth(w);
+      
+      // Initialize position
+      const initialVal = direction === "left" ? 0 : -w;
+      x.set(initialVal);
+    };
+
+    calculateWidth();
+    window.addEventListener("resize", calculateWidth);
+
+    return () => {
+      window.removeEventListener("resize", calculateWidth);
+    };
+  }, [items, direction, x]);
+
+  useEffect(() => {
+    startAnimationRef.current = (from: number) => {
+      if (isDragging.current || width === 0) return;
+
+      const target = direction === "left" ? -width : 0;
+      const distance = Math.abs(target - from);
+      const duration = distance / speed;
+
+      controlsRef.current = animate(x, target, {
+        ease: "linear",
+        duration: duration,
+        onComplete: () => {
+          const resetVal = direction === "left" ? 0 : -width;
+          x.set(resetVal);
+          startAnimationRef.current(resetVal);
+        },
+      });
+    };
+  }, [width, direction, speed, x]);
+
+  // Start initial animation when width is calculated
+  useEffect(() => {
+    if (width === 0) return;
+
+    startAnimationRef.current(x.get());
+
+    return () => {
+      controlsRef.current?.stop();
+    };
+  }, [width, x]);
+
+  const handleDragStart = () => {
+    isDragging.current = true;
+    controlsRef.current?.stop();
+  };
+
+  const handleDragEnd = () => {
+    isDragging.current = false;
+    
+    // Normalize current x to be within [-width, 0]
+    let currentX = x.get();
+    if (width > 0) {
+      currentX = ((currentX % width) - width) % width;
+      x.set(currentX);
+    }
+    
+    // Resume animation from current position
+    startAnimationRef.current(currentX);
+  };
+
   if (items.length === 0) return null;
+
   return (
-    <motion.div
-      className="flex w-max gap-3 sm:gap-4"
-      animate={{ x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"] }}
-      transition={{ duration, repeat: Infinity, ease: "linear" }}
-    >
-      {[...items, ...items, ...items].map((tech, idx) => (
-        <div
-          key={`${tech.name}-${idx}`}
-          className="group flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-300 shrink-0"
-        >
-          <img
-            src={tech.iconUrl}
-            alt={tech.name}
-            className="w-5 h-5 sm:w-6 sm:h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
-          />
-          <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 tracking-wide">{tech.name}</span>
-        </div>
-      ))}
-    </motion.div>
+    <div className="overflow-hidden cursor-grab active:cursor-grabbing w-full">
+      <motion.div
+        ref={containerRef}
+        className="flex w-max gap-3 sm:gap-4 select-none"
+        style={{ x }}
+        drag="x"
+        dragConstraints={{ left: -2 * width, right: 0 }}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        {[...items, ...items, ...items].map((tech, idx) => (
+          <div
+            key={`${tech.name}-${idx}`}
+            className="group flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-300 shrink-0"
+          >
+            <img
+              src={tech.iconUrl}
+              alt={tech.name}
+              draggable="false"
+              className="w-5 h-5 sm:w-6 sm:h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 pointer-events-none"
+            />
+            <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 tracking-wide">{tech.name}</span>
+          </div>
+        ))}
+      </motion.div>
+    </div>
   );
 }
