@@ -29,6 +29,7 @@ export function LaptopMockup({ imageUrl, title }: { imageUrl: string; title?: st
             <img
               src={imageUrl}
               alt={title ?? "Project mockup"}
+              loading="lazy"
               className="w-full h-full object-cover object-top"
             />
             {/* Glare overlay */}
@@ -82,6 +83,7 @@ export function MobileMockup({ imageUrl, title }: { imageUrl: string; title?: st
           <img
             src={imageUrl}
             alt={title ?? "Mobile mockup"}
+            loading="lazy"
             className="w-full h-full object-cover object-top"
           />
           {/* Glare */}

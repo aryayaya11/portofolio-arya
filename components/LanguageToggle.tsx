@@ -41,14 +41,14 @@ export function LanguageToggle() {
         <div className="absolute left-0 top-0 w-10 h-10 flex justify-center items-center">
           <span className={`flex justify-center items-center text-[13px] font-extrabold transition-colors ${language === "en" ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400 dark:text-zinc-600"}`} title="English">
             {language === "en" ? (
-              <img src="https://flagcdn.com/w20/gb.png" srcSet="https://flagcdn.com/w40/gb.png 2x" width="20" height="15" alt="UK" className="rounded-sm" />
+              <img src="/flags/gb.png" width="20" height="15" alt="UK" className="rounded-sm" />
             ) : "EN"}
           </span>
         </div>
         <div className="absolute left-[32px] top-0 w-10 h-10 flex justify-center items-center">
           <span className={`flex justify-center items-center text-[13px] font-extrabold transition-colors ${language === "id" ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400 dark:text-zinc-600"}`} title="Bahasa Indonesia">
             {language === "id" ? (
-              <img src="https://flagcdn.com/w20/id.png" srcSet="https://flagcdn.com/w40/id.png 2x" width="20" height="15" alt="ID" className="rounded-sm shadow-sm" />
+              <img src="/flags/id.png" width="20" height="15" alt="ID" className="rounded-sm shadow-sm" />
             ) : "ID"}
           </span>
         </div>

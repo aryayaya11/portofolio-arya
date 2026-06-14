@@ -69,6 +69,7 @@ function ExperienceGallery({ images, onImageClick }: { images: string[], onImage
             <img 
               src={img} 
               alt={`Experience highlight ${idx + 1}`} 
+              loading="lazy"
               className="w-64 h-40 sm:w-72 sm:h-44 object-cover hover:opacity-90 hover:scale-105 transition-all duration-300" 
             />
           </div>

@@ -60,6 +60,7 @@ function CertCard({ cert, onImageClick }: { cert: Certification, onImageClick: (
               key={idx}
               src={img} 
               alt={`${cert.title} - Photo ${idx + 1}`} 
+              loading="lazy"
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${idx === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`} 
             />
           ))}
@@ -144,6 +145,7 @@ function AwardCard({ award, onImageClick }: { award: Award, onImageClick: (image
               key={idx}
               src={img} 
               alt={`${award.title} - Photo ${idx + 1}`} 
+              loading="lazy"
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${idx === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`} 
             />
           ))}

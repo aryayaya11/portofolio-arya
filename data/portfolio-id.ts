@@ -250,22 +250,23 @@ export const projects: Project[] = [
     accentColor: "#00008F",
     year: "2026",
     images: [
-      "/projects/axa-dashboard/desktop/cover.png",
+      "/projects/axa/desktop/cover.png",
       "/projects/axa/ppt/slide-1.png",
       "/projects/axa/ppt/slide-2.png",
       "/projects/axa/ppt/slide-3.png",
+      "/projects/axa/ppt/slide-4.png",
     ],
     deviceScreenshots: {
       desktop: [
-        "/projects/axa-dashboard/desktop/cover.png",
-        "/projects/axa-dashboard/desktop/desktop-2.png",
-        "/projects/axa-dashboard/desktop/desktop-3.png",
+        "/projects/axa/desktop/cover.png",
+        "/projects/axa/desktop/desktop-2.png",
+        "/projects/axa/desktop/desktop-3.png",
       ],
       tablet: [],
       mobile: [
-        "/projects/axa-dashboard/mobile/mobile-1.png",
-        "/projects/axa-dashboard/mobile/mobile-2.png",
-        "/projects/axa-dashboard/mobile/mobile-3.png",
+        "/projects/axa/mobile/mobile-1.png",
+        "/projects/axa/mobile/mobile-2.png",
+        "/projects/axa/mobile/mobile-3.png",
       ],
     },
     description:
@@ -325,88 +326,6 @@ export const projects: Project[] = [
 filtered_df['Matrix Category'] = filtered_df.apply(
     lambda x: assign_quadrant(x, claim_limit, gwp_limit), axis=1
 )`
-      }
-    ]
-  },
-  {
-    id: "datmin-traveloka",
-    title: "Traveloka Hotel Segmentation & Price Prediction",
-    category: "Predictive Analytics",
-    categoryColor: "text-indigo-500",
-    accentColor: "#6366f1",
-    year: "2025",
-    images: [
-      "/projects/datmin-traveloka/desktop/desktop-1.png",
-    ],
-    deviceScreenshots: {
-      desktop: [
-        "/projects/datmin-traveloka/desktop/desktop-1.png",
-      ],
-      tablet: [],
-      mobile: [],
-    },
-    description: "Pipeline data mining end-to-end untuk mensegmentasi hotel dan memprediksi harga akomodasi di Surabaya menggunakan K-Means Clustering dan Regresi Random Forest berdasarkan data hasil scraping Traveloka.",
-    tech: ["Python", "Playwright", "Scikit-Learn", "Pandas", "Jupyter"],
-    techIcons: [
-      { name: "Python", iconUrl: "https://cdn.simpleicons.org/python/3776AB", color: "#3776AB" },
-      { name: "Playwright", iconUrl: "https://playwright.dev/img/playwright-logo.svg", color: "#2EAD33" },
-      { name: "Scikit-Learn", iconUrl: "https://cdn.simpleicons.org/scikitlearn/F7931E", color: "#F7931E" },
-      { name: "Pandas", iconUrl: "https://cdn.simpleicons.org/pandas/150458", color: "#150458" },
-      { name: "Jupyter", iconUrl: "https://cdn.simpleicons.org/jupyter/F37626", color: "#F37626" },
-    ],
-    problem: "Wisatawan sering kesulitan menemukan akomodasi optimal di Surabaya yang sesuai dengan anggaran mereka karena **informasi berlebihan (information overload)** di OTA seperti Traveloka. Diperlukan pengelompokan hotel secara logis ke dalam segmen pasar dan memprediksi **tolok ukur harga** berdasarkan fitur seperti lokasi dan peringkat bintang.",
-    action: [
-      "Merekayasa **web scraper asinkron** menggunakan Playwright untuk mengekstraksi data hotel langsung dari antarmuka dinamis Traveloka.",
-      "Melakukan **Analisis Data Eksploratif (EDA)** dan prapemrosesan data yang kuat untuk menangani nilai yang hilang.",
-      "Menerapkan **K-Means Clustering** untuk mengelompokkan hotel ke dalam segmen pasar yang berbeda dan dapat ditindaklanjuti (misalnya, hemat, mewah) berdasarkan fitur-fiturnya.",
-      "Membangun dan menyetel model **Regresi Random Forest** untuk memprediksi harga akomodasi secara akurat berdasarkan atribut yang diekstraksi."
-    ],
-    result: [
-      "Berhasil mengekstraksi dataset bersih dari **250+ hotel di Surabaya**, melewati batasan pemuatan dinamis.",
-      "Mengelompokkan akomodasi ke dalam **klaster yang berbeda**, memudahkan perbandingan nilai harga terhadap kualitas (value-for-money) di berbagai tingkatan hotel.",
-      "Melatih model Random Forest yang mampu memprediksi harga hotel, menetapkan **tolok ukur harga yang andal** berdasarkan data pasar.",
-      "Menyelesaikan **alur kerja data mining menyeluruh** mulai dari web scraping mentah hingga penerapan machine learning."
-    ],
-    keyResults: [
-      "250+ Hotel Di-scrape",
-      "Disegmentasi dengan K-Means",
-      "Prediksi Random Forest",
-    ],
-    github: null,
-    demo: null,
-    liveUrl: null,
-    featured: false,
-    gradient: "from-indigo-600/20 via-blue-600/10 to-transparent",
-    icon: "🏨",
-    codeSnippets: [
-      {
-        title: "Asynchronous Web Scraper Loop (Playwright)",
-        language: "python",
-        code: `async def run():
-    async with async_playwright() as p:
-        context = await p.chromium.launch_persistent_context(...)
-        page = context.pages[0] if context.pages else await context.new_page()
-        
-        await page.goto('https://www.traveloka.com/.../Surabaya')
-        await page.wait_for_selector('.css-1dbjc4n...')
-        
-        while len(listnamahotel) <= 250:
-            # Trigger lazy loading by scrolling to bottom
-            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            await asyncio.sleep(10)
-            
-            elements = await page.query_selector_all('.css-1dbjc4n...')
-            for el in elements:
-                nama_hotel = await (await el.query_selector('[data-testid="tvat-hotelName"]')).text_content()
-                
-                # Check for uniqueness before extracting detailed features
-                if nama_hotel not in listnamahotel:
-                    listnamahotel.append(nama_hotel)
-                    
-                    # Extract robust DOM nodes (Price, Location, Rating)
-                    harga = await (await el.query_selector('[data-testid="tvat-hotelPrice"]')).text_content()
-                    listharga.append(harga)
-                    ...`
       }
     ]
   },
@@ -505,6 +424,88 @@ filtered_df['Matrix Category'] = filtered_df.apply(
 
     return redirect()->route('students.transaksi.create', $pendaftaran->daftar_id);
 }`
+      }
+    ]
+  },
+  {
+    id: "datmin-traveloka",
+    title: "Traveloka Hotel Segmentation & Price Prediction",
+    category: "Predictive Analytics",
+    categoryColor: "text-indigo-500",
+    accentColor: "#6366f1",
+    year: "2025",
+    images: [
+      "/projects/datmin-traveloka/desktop/desktop-1.png",
+    ],
+    deviceScreenshots: {
+      desktop: [
+        "/projects/datmin-traveloka/desktop/desktop-1.png",
+      ],
+      tablet: [],
+      mobile: [],
+    },
+    description: "Pipeline data mining end-to-end untuk mensegmentasi hotel dan memprediksi harga akomodasi di Surabaya menggunakan K-Means Clustering dan Regresi Random Forest berdasarkan data hasil scraping Traveloka.",
+    tech: ["Python", "Playwright", "Scikit-Learn", "Pandas", "Jupyter"],
+    techIcons: [
+      { name: "Python", iconUrl: "https://cdn.simpleicons.org/python/3776AB", color: "#3776AB" },
+      { name: "Playwright", iconUrl: "https://playwright.dev/img/playwright-logo.svg", color: "#2EAD33" },
+      { name: "Scikit-Learn", iconUrl: "https://cdn.simpleicons.org/scikitlearn/F7931E", color: "#F7931E" },
+      { name: "Pandas", iconUrl: "https://cdn.simpleicons.org/pandas/150458", color: "#150458" },
+      { name: "Jupyter", iconUrl: "https://cdn.simpleicons.org/jupyter/F37626", color: "#F37626" },
+    ],
+    problem: "Wisatawan sering kesulitan menemukan akomodasi optimal di Surabaya yang sesuai dengan anggaran mereka karena **informasi berlebihan (information overload)** di OTA seperti Traveloka. Diperlukan pengelompokan hotel secara logis ke dalam segmen pasar dan memprediksi **tolok ukur harga** berdasarkan fitur seperti lokasi dan peringkat bintang.",
+    action: [
+      "Merekayasa **web scraper asinkron** menggunakan Playwright untuk mengekstraksi data hotel langsung dari antarmuka dinamis Traveloka.",
+      "Melakukan **Analisis Data Eksploratif (EDA)** dan prapemrosesan data yang kuat untuk menangani nilai yang hilang.",
+      "Menerapkan **K-Means Clustering** untuk mengelompokkan hotel ke dalam segmen pasar yang berbeda dan dapat ditindaklanjuti (misalnya, hemat, mewah) berdasarkan fitur-fiturnya.",
+      "Membangun dan menyetel model **Regresi Random Forest** untuk memprediksi harga akomodasi secara akurat berdasarkan atribut yang diekstraksi."
+    ],
+    result: [
+      "Berhasil mengekstraksi dataset bersih dari **250+ hotel di Surabaya**, melewati batasan pemuatan dinamis.",
+      "Mengelompokkan akomodasi ke dalam **klaster yang berbeda**, memudahkan perbandingan nilai harga terhadap kualitas (value-for-money) di berbagai tingkatan hotel.",
+      "Melatih model Random Forest yang mampu memprediksi harga hotel, menetapkan **tolok ukur harga yang andal** berdasarkan data pasar.",
+      "Menyelesaikan **alur kerja data mining menyeluruh** mulai dari web scraping mentah hingga penerapan machine learning."
+    ],
+    keyResults: [
+      "250+ Hotel Di-scrape",
+      "Disegmentasi dengan K-Means",
+      "Prediksi Random Forest",
+    ],
+    github: null,
+    demo: null,
+    liveUrl: null,
+    featured: false,
+    gradient: "from-indigo-600/20 via-blue-600/10 to-transparent",
+    icon: "🏨",
+    codeSnippets: [
+      {
+        title: "Asynchronous Web Scraper Loop (Playwright)",
+        language: "python",
+        code: `async def run():
+    async with async_playwright() as p:
+        context = await p.chromium.launch_persistent_context(...)
+        page = context.pages[0] if context.pages else await context.new_page()
+        
+        await page.goto('https://www.traveloka.com/.../Surabaya')
+        await page.wait_for_selector('.css-1dbjc4n...')
+        
+        while len(listnamahotel) <= 250:
+            # Trigger lazy loading by scrolling to bottom
+            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            await asyncio.sleep(10)
+            
+            elements = await page.query_selector_all('.css-1dbjc4n...')
+            for el in elements:
+                nama_hotel = await (await el.query_selector('[data-testid="tvat-hotelName"]')).text_content()
+                
+                # Check for uniqueness before extracting detailed features
+                if nama_hotel not in listnamahotel:
+                    listnamahotel.append(nama_hotel)
+                    
+                    # Extract robust DOM nodes (Price, Location, Rating)
+                    harga = await (await el.query_selector('[data-testid="tvat-hotelPrice"]')).text_content()
+                    listharga.append(harga)
+                    ...`
       }
     ]
   },

@@ -119,6 +119,7 @@ export default function Projects() {
                       <img
                         src={p.images[0]}
                         alt={p.title}
+                        loading="lazy"
                         className="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
                       />
                       

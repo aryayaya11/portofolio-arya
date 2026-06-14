@@ -267,6 +267,7 @@ function DeviceShowcase({ project }: { project: Project }) {
                 <img
                   src={images[imgIndex]}
                   alt={`${project.title} — ${activeTab} view ${imgIndex + 1}`}
+                  loading="lazy"
                   className="w-full h-auto object-cover object-top block bg-white"
                   style={{ maxHeight: activeTab === "mobile" ? "560px" : "none" }}
                 />

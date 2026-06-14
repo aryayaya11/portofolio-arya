@@ -78,7 +78,7 @@ export default function About() {
                     key={idx} 
                     className={`absolute inset-0 rounded-2xl overflow-hidden border-8 border-white dark:border-zinc-900 transition-all duration-500 ease-out ${positionClasses}`}
                   >
-                    <img src={src} alt={`About ${idx + 1}`} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 pointer-events-none" />
+                    <img src={src} alt={`About ${idx + 1}`} loading="lazy" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 pointer-events-none" />
                   </div>
                 );
               })}
