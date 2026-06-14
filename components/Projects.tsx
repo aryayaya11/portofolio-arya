@@ -40,7 +40,7 @@ function TiltCard({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
       whileHover={{ y: -8, rotateX: 4, rotateY: -4, scale: 1.02 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ type: "spring", stiffness: 200, damping: 20 }}
       className="h-full flex flex-col perspective-1000 group will-change-transform"
     >
       <div className="h-full flex flex-col w-full">
@@ -109,11 +109,11 @@ export default function Projects() {
               <motion.div
                 key={p.id}
                 variants={cardVariants}
-                layout
+                layout="position"
                 className="group rounded-lg bg-white dark:bg-zinc-950 transition-colors duration-300"
               >
                 <TiltCard>
-                  <div className="flex flex-col h-full rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 group-hover:shadow-2xl group-hover:border-zinc-300 dark:group-hover:border-zinc-700 transition-all duration-300">
+                  <div className="flex flex-col h-full rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 group-hover:shadow-2xl group-hover:border-zinc-300 dark:group-hover:border-zinc-700 transition-colors transition-shadow duration-300">
                     {/* Image */}
                     <div className="relative h-48 overflow-hidden bg-zinc-100 dark:bg-zinc-900 shrink-0">
                       <img

@@ -7,7 +7,7 @@ import type { Project } from "@/data/portfolio";
 import { portfolioData } from "@/data/portfolio";
 import { useLanguage } from "@/components/LanguageContext";
 import { TechIconGrid } from "@/components/DeviceMockup";
-import { ArrowLeft, ExternalLink, ChevronRight, GitBranch, Monitor, Tablet, Smartphone, ChevronLeft, Presentation, Code } from "lucide-react";
+import { ArrowLeft, ExternalLink, ChevronRight, GitBranch, Monitor, Tablet, Smartphone, ChevronLeft, Presentation, Code, BarChart } from "lucide-react";
 import { GitHubIcon } from "@/components/icons/BrandIcons";
 
 const fadeUp = {
@@ -16,7 +16,7 @@ const fadeUp = {
 };
 
 function parseMarkdown(text: string) {
-  const parts = text.split(/(\*\*.*?\*\*)/g);
+  const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`)/g);
   return parts.map((part, i) => {
     if (part.startsWith("**") && part.endsWith("**")) {
       return (
@@ -25,8 +25,32 @@ function parseMarkdown(text: string) {
         </strong>
       );
     }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return (
+        <em key={i} className="italic text-zinc-800 dark:text-zinc-200">
+          {part.slice(1, -1)}
+        </em>
+      );
+    }
+    if (part.startsWith("`") && part.endsWith("`")) {
+      return (
+        <code key={i} className="px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800/80 font-mono text-[11px] text-indigo-600 dark:text-indigo-400 font-semibold border border-zinc-200 dark:border-zinc-700/60">
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
     return part;
   });
+}
+
+function splitKeyResult(r: string) {
+  const colonIndex = r.indexOf(":");
+  if (colonIndex !== -1) {
+    const title = r.substring(0, colonIndex).trim();
+    const desc = r.substring(colonIndex + 1).trim();
+    return { title, desc };
+  }
+  return { title: "", desc: r };
 }
 
 function StepCard({
@@ -75,7 +99,7 @@ function StepCard({
   );
 }
 
-type DeviceTab = "desktop" | "tablet" | "mobile" | "presentation" | "code";
+type DeviceTab = "desktop" | "tablet" | "mobile" | "presentation" | "code" | "charts";
 
 function DeviceShowcase({ project }: { project: Project }) {
   const { language } = useLanguage();
@@ -90,9 +114,16 @@ function DeviceShowcase({ project }: { project: Project }) {
   const availableTabs: { key: DeviceTab; label: string; Icon: React.ElementType }[] = [];
   
   if (shots) {
-    if (shots.desktop.length > 0) availableTabs.push({ key: "desktop", label: "Desktop", Icon: Monitor });
-    if (shots.tablet.length > 0) availableTabs.push({ key: "tablet", label: "Tablet", Icon: Tablet });
-    if (shots.mobile.length > 0) availableTabs.push({ key: "mobile", label: "Mobile", Icon: Smartphone });
+    if (shots.desktop && shots.desktop.length > 0) availableTabs.push({ key: "desktop", label: "Desktop", Icon: Monitor });
+    if (shots.tablet && shots.tablet.length > 0) availableTabs.push({ key: "tablet", label: "Tablet", Icon: Tablet });
+    if (shots.mobile && shots.mobile.length > 0) availableTabs.push({ key: "mobile", label: "Mobile", Icon: Smartphone });
+    if (shots.charts && shots.charts.length > 0) {
+      availableTabs.push({
+        key: "charts",
+        label: language === 'en' ? "Visualizations" : "Visualisasi",
+        Icon: BarChart
+      });
+    }
   }
 
   if (slides.length > 0) {
@@ -120,7 +151,7 @@ function DeviceShowcase({ project }: { project: Project }) {
     ? slides
     : (activeTab === "code"
       ? []
-      : (shots ? shots[activeTab as Exclude<DeviceTab, "presentation" | "code">] : []));
+      : (shots ? (shots[activeTab as Exclude<DeviceTab, "presentation" | "code">] || []) : []));
 
   const handleTabChange = (tab: DeviceTab) => {
     setActiveTab(tab);
@@ -247,30 +278,53 @@ function DeviceShowcase({ project }: { project: Project }) {
             ) : (
               /* Device frame */
               <div
-                className={`relative overflow-hidden shadow-xl ${
+                className={`relative shadow-xl w-full mx-auto ${
                   activeTab === "mobile"
                     ? "rounded-[2.5rem] border-[6px] border-zinc-800"
                     : activeTab === "tablet"
                     ? "rounded-[1.5rem] border-4 border-zinc-800"
                     : "rounded-xl border border-zinc-200 dark:border-zinc-800"
-                }`}
+                } overflow-hidden bg-zinc-950`}
+                style={{
+                  height:
+                    activeTab === "mobile"
+                      ? "520px"
+                      : activeTab === "tablet"
+                      ? "480px"
+                      : "450px",
+                }}
               >
                 {/* Top notch for mobile */}
                 {activeTab === "mobile" && (
-                  <div className="absolute top-3 left-1/2 -translate-x-1/2 w-20 h-4 bg-zinc-900 rounded-full z-20 flex items-center justify-center">
+                  <div className="absolute top-3 left-1/2 -translate-x-1/2 w-20 h-4 bg-zinc-900 rounded-full z-20 flex items-center justify-center pointer-events-none">
                     <div className="w-8 h-1.5 bg-zinc-700 rounded-full" />
                   </div>
                 )}
                 {activeTab === "tablet" && (
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-700 rounded-full z-20" />
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-700 rounded-full z-20 pointer-events-none" />
                 )}
-                <img
-                  src={images[imgIndex]}
-                  alt={`${project.title} — ${activeTab} view ${imgIndex + 1}`}
-                  loading="lazy"
-                  className="w-full h-auto object-cover object-top block bg-white"
-                  style={{ maxHeight: activeTab === "mobile" ? "560px" : "none" }}
-                />
+
+                {/* Scrollable screen viewport */}
+                <div
+                  className={`w-full h-full ${
+                    activeTab === "presentation" || activeTab === "charts"
+                      ? "overflow-hidden"
+                      : "overflow-y-auto scrollbar-thin"
+                  } bg-white dark:bg-zinc-900`}
+                >
+                  <img
+                    src={images[imgIndex]}
+                    alt={`${project.title} — ${activeTab} view ${imgIndex + 1}`}
+                    loading="lazy"
+                    className={`w-full block ${
+                      activeTab === "presentation"
+                        ? "h-full object-contain bg-zinc-950"
+                        : activeTab === "charts"
+                        ? "h-full object-contain bg-zinc-50 dark:bg-zinc-900/50"
+                        : "h-auto object-cover object-top bg-white"
+                    }`}
+                  />
+                </div>
               </div>
             )}
           </motion.div>
@@ -343,7 +397,7 @@ export default function ProjectDetailClient({ project: initialProject, prev: ini
     <main className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors duration-300">
       {/* Top Nav */}
       <div className="sticky top-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between md:pr-44">
           <Link
             href="/#projects"
             className="inline-flex items-center gap-2 text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
@@ -504,21 +558,99 @@ export default function ProjectDetailClient({ project: initialProject, prev: ini
             {language === 'en' ? 'Key Outcomes' : 'Hasil Utama'}
           </motion.h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {project.result.slice(0, 6).map((r, i) => (
-              <motion.div
-                key={i}
-                variants={fadeUp}
-                initial="initial"
-                animate="animate"
-                transition={{ delay: 0.14 + i * 0.07, duration: 0.6 }}
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-6 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-300"
-              >
-                <div className="text-3xl font-black tabular-nums mb-4 text-zinc-900 dark:text-white">
-                  {String(i + 1).padStart(2, "0")}
-                </div>
-                <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">{parseMarkdown(r)}</p>
-              </motion.div>
-            ))}
+            {project.keyResults && project.keyResults.length > 0 ? (
+              project.keyResults.map((r, i) => {
+                const { title, desc } = splitKeyResult(r);
+                return (
+                  <motion.div
+                    key={i}
+                    variants={fadeUp}
+                    initial="initial"
+                    animate="animate"
+                    transition={{ delay: 0.14 + i * 0.07, duration: 0.6 }}
+                    whileHover={{ y: -6, scale: 1.01, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+                    className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/30 p-6 shadow-sm hover:shadow-md hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-300 group"
+                  >
+                    <div
+                      className="absolute top-0 left-0 w-full h-[3px] opacity-70 group-hover:opacity-100 transition-opacity"
+                      style={{ backgroundColor: project.accentColor }}
+                    />
+                    <div className="flex items-start justify-between gap-4 mb-4">
+                      <span
+                        className="text-3xl font-black tracking-tight tabular-nums select-none opacity-80 group-hover:opacity-100 transition-opacity"
+                        style={{ color: project.accentColor }}
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <div
+                        className="w-8 h-8 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity absolute top-4 right-4 pointer-events-none"
+                        style={{ backgroundColor: project.accentColor }}
+                      />
+                    </div>
+                    {title ? (
+                      <div className="space-y-2">
+                        <h4 className="text-sm font-extrabold text-zinc-900 dark:text-white tracking-tight leading-snug">
+                          {parseMarkdown(title)}
+                        </h4>
+                        <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                          {parseMarkdown(desc)}
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                        {parseMarkdown(desc)}
+                      </p>
+                    )}
+                  </motion.div>
+                );
+              })
+            ) : (
+              project.result.slice(0, 6).map((r, i) => {
+                const { title, desc } = splitKeyResult(r);
+                return (
+                  <motion.div
+                    key={i}
+                    variants={fadeUp}
+                    initial="initial"
+                    animate="animate"
+                    transition={{ delay: 0.14 + i * 0.07, duration: 0.6 }}
+                    whileHover={{ y: -6, scale: 1.01, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+                    className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/30 p-6 shadow-sm hover:shadow-md hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-300 group"
+                  >
+                    <div
+                      className="absolute top-0 left-0 w-full h-[3px] opacity-70 group-hover:opacity-100 transition-opacity"
+                      style={{ backgroundColor: project.accentColor }}
+                    />
+                    <div className="flex items-start justify-between gap-4 mb-4">
+                      <span
+                        className="text-3xl font-black tracking-tight tabular-nums select-none opacity-80 group-hover:opacity-100 transition-opacity"
+                        style={{ color: project.accentColor }}
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <div
+                        className="w-8 h-8 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity absolute top-4 right-4 pointer-events-none"
+                        style={{ backgroundColor: project.accentColor }}
+                      />
+                    </div>
+                    {title ? (
+                      <div className="space-y-2">
+                        <h4 className="text-sm font-extrabold text-zinc-900 dark:text-white tracking-tight leading-snug">
+                          {parseMarkdown(title)}
+                        </h4>
+                        <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                          {parseMarkdown(desc)}
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                        {parseMarkdown(desc)}
+                      </p>
+                    )}
+                  </motion.div>
+                );
+              })
+            )}
           </div>
         </section>
 

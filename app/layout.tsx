@@ -10,6 +10,7 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import CustomCursor from "@/components/CustomCursor";
 import { BackToTop } from "@/components/BackToTop";
 import GlobalClickSound from "@/components/GlobalClickSound";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -70,6 +71,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <LanguageProvider>
+            <LoadingScreen />
             <LanguageToggle />
             <ThemeToggle />
             <CustomCursor />
