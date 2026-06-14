@@ -547,7 +547,7 @@ filtered_df['Matrix Category'] = filtered_df.apply(
       ],
     },
     description:
-      "Pipeline teks mining NLP end-to-end untuk mengklasterkan 128.000+ ulasan aplikasi BSI Mobile dari Google Play menggunakan vektorisasi TF-IDF dan K-Means clustering, dengan prapemrosesan Bahasa Indonesia penuh melalui stemming Sastrawi.",
+      "Pipeline NLP & Text Mining teroptimasi untuk menganalisis dan mengklasterkan ulasan pengguna aplikasi perbankan BSI (BSI Mobile & BYOND) dari Google Play Store. Menerapkan pembersihan data, perluasan reduplikasi, normalisasi slang/singkatan, kustomisasi stemmer Sastrawi, dan metode Unique Word Stemming (dictionary lookup) untuk memotong waktu pemrosesan data besar dari berjam-jam menjadi sekitar 30 menit.",
     tech: ["Python", "Scikit-Learn", "Sastrawi", "NLTK", "Pandas", "Seaborn", "Jupyter"],
     techIcons: [
       { name: "Python", iconUrl: "https://cdn.simpleicons.org/python/3776AB", color: "#3776AB" },
@@ -555,29 +555,31 @@ filtered_df['Matrix Category'] = filtered_df.apply(
       { name: "Pandas", iconUrl: "https://cdn.simpleicons.org/pandas/150458", color: "#150458" },
       { name: "Jupyter", iconUrl: "https://cdn.simpleicons.org/jupyter/F37626", color: "#F37626" },
     ],
-    problem: "BSI Mobile telah mengumpulkan **128.607 ulasan pengguna** di Google Play, namun tidak ada cara sistematis untuk memahami apa yang dikeluhkan atau dipuji pengguna. Membaca ribuan ulasan secara manual adalah mustahil — sebuah **pendekatan clustering berbasis data** diperlukan untuk memunculkan kelompok wawasan yang dapat ditindaklanjuti dari teks bahasa Indonesia mentah yang tidak terstruktur.",
+    problem: "Aplikasi perbankan BSI memiliki **128.607 ulasan mentah** di Google Play Store (dibersihkan menjadi **58.407 ulasan** aktif periode 2023 - sekarang). Membaca dan menganalisis puluhan ribu ulasan mentah secara manual untuk menemukan isu kritis, bug teknis, atau kepuasan pengguna adalah hal yang mustahil. Dibutuhkan **analisis klasterisasi teks otomatis** untuk mengekstrak pola keluhan dan sentimen pengguna secara sistematis dari teks bahasa Indonesia yang tidak terstruktur dan penuh noise.",
     action: [
-      "Memuat dan membersihkan **128.607 ulasan mentah** (109.322 setelah deduplikasi dan penghapusan nilai null) dari dataset BSI Google Play",
-      "Menerapkan **pipeline prapemrosesan NLP Bahasa Indonesia**: lowercasing, pembersihan regex, penghapusan stopword NLTK, dan **stemming morfologis Sastrawi**",
-      "Menerapkan **vektorisasi TF-IDF** (maksimum 1.000 fitur, min_df=5, max_df=0,8) untuk mengubah teks menjadi matriks fitur 2.000×493",
-      "Melatih **model K-Means** (k=5, n_init=10, random_state=42) untuk mensegmentasi ulasan ke dalam 5 klaster perilaku yang berbeda",
-      "Menganalisis setiap klaster melalui **kata TF-IDF teratas**, peringkat rata-rata, dan contoh ulasan yang representatif",
-      "Menghasilkan **visualisasi** (distribusi peringkat, diagram batang ukuran klaster) menggunakan Matplotlib dan Seaborn",
+      "Melakukan pembersihan data, penghapusan null, deduplikasi teks, dan pemfilteran rentang waktu ulasan dari Januari 2023 hingga 2025 (menghasilkan **58.407 ulasan bersih**)",
+      "Merancang ekspansi reduplikasi kata ulang berakhiran angka `2` (seperti `tiba2` menjadi `tiba tiba`) menggunakan Regular Expressions sebelum pembersihan numerik",
+      "Menerapkan pencegahan penggabungan kata (*word merging prevention*) dengan mengganti karakter non-alfabet (seperti `/` dan `&`) dengan spasi sebelum proses pemangkasan whitespace",
+      "Membangun kamus normalisasi slang dan singkatan kustom (*slang dictionary*) untuk memetakan kata tidak baku (seperti `gak` -> `tidak`, `yg` -> `yang`, `tf` -> `transfer`) ke bentuk baku",
+      "Menambahkan kosakata teknis/inggris (seperti `update`, `error`, `transfer`, `qris`, `byond`, `login`, `otp`, `pin`, `saldo`) ke kamus internal stemmer Sastrawi agar stemming berjalan tepat",
+      "Mengimplementasikan metode **Unique Word Stemming (dictionary lookup)** untuk meminimalkan beban komputasi stemming Sastrawi, memangkas waktu pemrosesan dataset besar dari berjam-jam menjadi sekitar 30 menit",
+      "Mengekstrak fitur teks menggunakan **TF-IDF Vectorizer** dengan parameter `max_features=1000, min_df=5, max_df=0.8`",
+      "Melatih algoritma **K-Means Clustering** (k=5, random_state=42) untuk mensegmentasi ulasan ke dalam 5 klaster topik utama",
+      "Melakukan analisis tren rating bulanan, korelasi volume vs rating, peta kata kunci dominan, dan analisis responsivitas dukungan pengembang (*developer responsiveness*)",
     ],
     result: [
-      "**Klaster 0 (307 ulasan, rata-rata 2,87★)**: Keluhan migrasi BSI Mobile vs. Byond — pengguna frustrasi dengan ketidakcocokan perangkat dengan aplikasi baru",
-      "**Klaster 1 (260 ulasan, rata-rata 1,95★)**: Laporan error & crash aplikasi — dominasi kata 'error', 'eror', 'tolong'; klaster kegagalan UX yang kritis",
-      "**Klaster 2 (62 ulasan, rata-rata 4,73★)**: Pengguna yang puas — kata kunci: 'mudah', 'cepat', 'amanah', 'nyaman' — klaster dengan peringkat tertinggi",
-      "**Klaster 3 (1.191 ulasan, rata-rata 2,34★)**: Klaster ketidakpuasan terbesar — rasa frustrasi umum terkait transaksi, masalah saldo, dan keandalan sistem",
-      "**Klaster 4 (180 ulasan, rata-rata 1,91★)**: Kegagalan pembukaan akun — pengguna tidak dapat mendaftar atau membuka rekening secara online",
-      "Peringkat rata-rata keseluruhan: **2,40★** — 51,75% ulasan yang dijadikan sampel memberikan bintang 1, mengungkapkan ketidakpuasan pengguna yang parah",
+      "**Klasterisasi K-Means (5 Klaster)**: Mensegmentasikan ulasan ke dalam 3 klaster kepuasan tinggi (Klaster 0, 1, 2, 4 dengan rating rata-rata >4,8★) dan 1 klaster keluhan teknis mayoritas (Klaster 3 berisi **33.035 ulasan** dengan rating rata-rata **2,85★** terkait error, login, update, dan transfer)",
+      "**Polarisasi Sentimen Biner**: Menemukan polarisasi ekstrem di mana **65,6%** pengguna memberikan rating **5★** (puas kestabilan umum) dan **22,2%** memberikan rating **1★** (mengalami kendala fatal), dengan sangat sedikit ulasan netral di antaranya",
+      "**Identifikasi Outage & Crash HP Spesifik**: Mendeteksi anomali rating bulanan terendah (**2,01★**) pada Mei 2023 akibat gangguan sistem IT nasional BSI, serta mendeteksi lonjakan keluhan crash berkelanjutan sepanjang tahun 2024 pada tipe HP tertentu (seperti Samsung A13) setelah rilis pembaruan versi `6.22.1` dan `6.22.3`",
+      "**Analisis Masalah Utama Pengguna**: Memetakan kata kunci keluhan di mana isu *Error & Crashes* dikeluhkan oleh 7,8% ulasan (avg rating **1,92**), disusul kendala *Login & Akses* (5,3%, avg rating **2,12**), masalah *SMS OTP* dengan rating terendah (2,4%, avg rating **1,66** akibat pulsa terpotong tanpa OTP masuk), serta resistensi migrasi ke aplikasi *BYOND* (0,8%, avg rating **2,66**)",
+      "**Evaluasi Dukungan Developer**: Menemukan tingkat respons pengembang yang sangat aktif dengan membalas **99,86%** dari total ulasan, memprioritaskan keluhan kritis dengan membalas **99,6%** ulasan bintang 1 dan **99,9%** ulasan bintang 2 (rata-rata waktu tanggapan 2,36 hari)",
     ],
     keyResults: [
-      "Text Mining 128.607 Ulasan Play Store: Melakukan pembersihan data, pengolahan stopword, dan stemming morfologis Sastrawi",
-      "Klasterisasi K-Means Sentimen Ulasan: Mengelompokkan teks tidak terstruktur menggunakan TF-IDF ke dalam 5 klaster keluhan/pujian utama",
-      "Temuan Kritis Peringkat Rata-Rata 2,40★: Mengungkap masalah migrasi aplikasi BSI vs Byond dan mendeteksi titik error aplikasi",
+      "Unique Word Stemming Teroptimasi: Memotong waktu stemming Sastrawi dari berjam-jam menjadi sekitar 30 menit menggunakan dictionary lookup pada 19.582 kata unik",
+      "Identifikasi Isu Kritis & Pola Outage: Mendeteksi anomali gangguan IT nasional Mei 2023, crash HP Samsung A13 pasca-update, dan isu pemotongan pulsa SMS OTP",
+      "Analisis Layanan Pelanggan (Customer Support): Menganalisis 99,86% tanggapan pengembang, membuktikan prioritas pada keluhan kritis bintang 1 & 2 dengan rata-rata waktu balas 2,36 hari",
     ],
-    github: null,
+    github: "https://github.com/aryayaya11/BSI-segmentation",
     demo: null,
     liveUrl: null,
     featured: false,
@@ -587,34 +589,46 @@ filtered_df['Matrix Category'] = filtered_df.apply(
       {
         title: "Indonesian NLP Preprocessing Pipeline (Python)",
         language: "python",
-        code: `# Initialize Sastrawi stemmer for Bahasa Indonesia
-factory = StemmerFactory()
-stemmer = factory.create_stemmer()
+        code: `# 1. Kamus normalisasi slang & ekspansi stopwords kustom
+stop_words = set(stopwords.words('indonesian'))
+custom_stopwords = {'bsi', 'aplikasi', 'mobile', 'bank', 'byond', 'sih', 'deh', 'dong', 'yang', 'di', 'ke', 'dari'}
+stop_words.update(custom_stopwords)
 
-def preprocess_text(text):
-    # Lowercase and remove non-alphabetic characters
+slang_dict = {
+    'gak': 'tidak', 'ga': 'tidak', 'ngak': 'tidak', 'gk': 'tidak',
+    'yg': 'yang', 'dgn': 'dengan', 'utk': 'untuk', 'tp': 'tapi',
+    'klo': 'kalau', 'kalo': 'kalau', 'krn': 'karena',
+    'sy': 'saya', 'dr': 'dari', 'mo': 'mau', 'aja': 'saja',
+    'eror': 'error', 'tf': 'transfer', 'hp': 'handphone', 'updet': 'update'
+}
+
+# 2. Tambahkan kata dasar teknis/inggris ke kamus internal Sastrawi
+sastrawi_dict = stemmer.delegatedStemmer.dictionary
+technical_words = ['update', 'error', 'transfer', 'qris', 'byond', 'login', 'otp', 'pin', 'saldo']
+sastrawi_dict.add_words(technical_words)
+
+# 3. Preprocessing cepat menggunakan Unique Word Stemming (dictionary lookup)
+stem_mapping = {}
+for i, word in enumerate(unique_words):
+    stem_mapping[word] = stemmer.stem(word) # pre-stem kata unik saja
+
+def preprocess_text_fast(text):
     text = text.lower()
-    text = re.sub(r'[^a-zA-Z\\s]', '', text)
+    # Ekspansi kata ulang berakhiran angka 2 (tiba2 -> tiba tiba)
+    text = re.sub(r'\\b([a-zA-Z]+)2\\b', r'\\1 \\1', text)
+    # Ganti non-alfabet dengan spasi untuk mencegah kata tergabung
+    text = re.sub(r'[^a-zA-Z\\s]', ' ', text)
     text = re.sub(r'\\s+', ' ', text).strip()
+    
+    stemmed_words = []
+    for word in text.split():
+        word_normalized = slang_dict.get(word, word)
+        if word_normalized not in stop_words:
+            # Menggunakan dictionary lookup untuk performa tinggi
+            stemmed_words.append(stem_mapping.get(word_normalized, word_normalized))
+    return ' '.join(stemmed_words)
 
-    # Remove Indonesian stopwords
-    stop_words = set(stopwords.words('indonesian'))
-    words = [w for w in text.split() if w not in stop_words]
-
-    # Apply Sastrawi morphological stemming
-    stemmed = [stemmer.stem(word) for word in words]
-    return ' '.join(stemmed)
-
-df['clean_content'] = df['content'].apply(preprocess_text)
-
-# TF-IDF Vectorization
-vectorizer = TfidfVectorizer(max_features=1000, min_df=5, max_df=0.8)
-tfidf_matrix = vectorizer.fit_transform(df['clean_content'])
-# → Shape: (2000, 493)
-
-# K-Means Clustering
-kmeans = KMeans(n_clusters=5, random_state=42, n_init=10)
-df['cluster'] = kmeans.fit_predict(tfidf_matrix)`
+df['clean_content'] = df['content'].apply(preprocess_text_fast)`
       }
     ]
   },

@@ -547,7 +547,7 @@ filtered_df['Matrix Category'] = filtered_df.apply(
       ],
     },
     description:
-      "An end-to-end NLP text mining pipeline to cluster 128,000+ BSI Mobile app reviews from Google Play using TF-IDF vectorization and K-Means clustering, with full Indonesian language preprocessing via Sastrawi stemming.",
+      "An optimized NLP & Text Mining pipeline to analyze and cluster user reviews of BSI banking applications (BSI Mobile & BYOND) from the Google Play Store. It implements text cleaning, reduplication expansion, slang normalization, Sastrawi stemmer customization, and a Unique Word Stemming (dictionary lookup) method to cut large dataset processing time from hours down to around 30 minutes.",
     tech: ["Python", "Scikit-Learn", "Sastrawi", "NLTK", "Pandas", "Seaborn", "Jupyter"],
     techIcons: [
       { name: "Python", iconUrl: "https://cdn.simpleicons.org/python/3776AB", color: "#3776AB" },
@@ -555,29 +555,31 @@ filtered_df['Matrix Category'] = filtered_df.apply(
       { name: "Pandas", iconUrl: "https://cdn.simpleicons.org/pandas/150458", color: "#150458" },
       { name: "Jupyter", iconUrl: "https://cdn.simpleicons.org/jupyter/F37626", color: "#F37626" },
     ],
-    problem: "BSI Mobile had accumulated **128,607 user reviews** on Google Play, but there was no systematic way to understand what users were actually complaining about or praising. Manually reading thousands of reviews is infeasible — a **data-driven clustering approach** was needed to surface actionable insight groups from raw unstructured Indonesian-language text.",
+    problem: "BSI banking applications accumulated **128,607 raw reviews** on the Google Play Store (cleaned and filtered to **58,407 active reviews** from 2023 to present). Manually reading and analyzing tens of thousands of unstructured reviews to identify critical bugs, technical outages, or user satisfaction is impossible. A **systematic text clustering approach** was required to automatically surface actionable insights from noisy Indonesian slang and unstructured text.",
     action: [
-      "Loaded and cleaned **128,607 raw reviews** (109,322 after deduplication and null removal) from the BSI Google Play dataset",
-      "Implemented **Indonesian NLP preprocessing pipeline**: lowercasing, regex cleaning, NLTK stopword removal, and **Sastrawi morphological stemming**",
-      "Applied **TF-IDF vectorization** (max 1,000 features, min_df=5, max_df=0.8) to transform text into a 2,000×493 feature matrix",
-      "Trained a **K-Means model** (k=5, n_init=10, random_state=42) to segment reviews into 5 distinct behavioral clusters",
-      "Analyzed each cluster via **top TF-IDF terms**, average rating, and representative sample reviews",
-      "Generated **visualizations** (rating distribution, cluster size bar charts) using Matplotlib and Seaborn",
+      "Cleaned, deduplicated, and filtered the raw Google Play dataset to focus on reviews from January 2023 to 2025, producing **58,407 clean reviews**",
+      "Designed a regex-based reduplication expansion to restore word repetitions ending in the number `2` (e.g., converting `tiba2` to `tiba tiba`) before digit removal",
+      "Implemented a word merging prevention step by replacing non-alphabetic characters (e.g., `/` and `&`) with spaces to prevent accidental word compounding",
+      "Built a custom slang normalization dictionary mapping conversational shortforms and typos (e.g., `gak` -> `tidak`, `yg` -> `yang`, `tf` -> `transfer`) to standard terms",
+      "Injected modern technical and banking terms (e.g., `update`, `error`, `transfer`, `qris`, `byond`, `login`, `otp`, `pin`) into Sastrawi's internal dictionary to ensure correct morphological stemming",
+      "Developed a high-performance **Unique Word Stemming (dictionary lookup)** pipeline, reducing Sastrawi stemming time from several hours to around 30 minutes for the full dataset",
+      "Vectorized text features using **TF-IDF** with `max_features=1000, min_df=5, max_df=0.8` to transform reviews into a numerical feature matrix",
+      "Trained a **K-Means Clustering** model (k=5, random_state=42) to group reviews into 5 distinct customer experience categories",
+      "Conducted descriptive analysis on annual rating trends, monthly volume spikes, keyword frequency maps, and developer response rates",
     ],
     result: [
-      "**Cluster 0 (307 reviews, avg 2.87★)**: BSI Mobile vs. Byond migration complaints — users frustrated by phone incompatibility with new app",
-      "**Cluster 1 (260 reviews, avg 1.95★)**: App error & crash reports — 'error', 'eror', 'tolong' dominate; critical UX failure cluster",
-      "**Cluster 2 (62 reviews, avg 4.73★)**: Satisfied users — keywords: 'mudah', 'cepat', 'amanah', 'nyaman' — highest-rated cluster",
-      "**Cluster 3 (1,191 reviews, avg 2.34★)**: Largest dissatisfied cluster — general frustration with transactions, saldo issues, and reliability",
-      "**Cluster 4 (180 reviews, avg 1.91★)**: Account opening failures — users unable to register or open accounts online",
-      "Overall average rating: **2.40★** — 51.75% of sampled reviews rated 1 star, revealing severe user dissatisfaction",
+      "**K-Means Customer Segmentation (5 Clusters)**: Grouped reviews into 3 high-satisfaction clusters (Clusters 0, 1, 2, 4 with avg ratings >4.8★) and 1 massive technical issue cluster (Cluster 3 containing **33,035 reviews** with a low avg rating of **2.85★** focusing on error, update, login, and transfer issues)",
+      "**Binary Sentiment Polarization**: Revealed a strong 'love-hate' pattern where **65.6%** of users rated the app **5★** (highly satisfied with general stability) and **22.2%** rated it **1★** (encountered critical blockers), showing a highly polarized user experience",
+      "**Outage & Device-Specific Crash Detection**: Uncovered a monthly rating low of **2.01★** in May 2023 due to a national IT outage, and pinpointed persistent crash complaints throughout 2024 on specific devices (e.g., Samsung A13) triggered by version `6.22.1` and `6.22.3` updates",
+      "**Granular Keyword Trouble Mapping**: Surfaced top user pain points including *Error & Crashes* in 7.8% of reviews (avg rating **1.92**), *Login & Access* in 5.3% (avg rating **2.12**), *SMS OTP delivery failures* with the lowest average score (2.4%, avg rating **1.66** due to balance charges without receiving codes), and resistance to migrating to the new *BYOND* app (0.8%, avg rating **2.66**)",
+      "**Developer Support Performance Audit**: Audited developer responsiveness showing they replied to **99.86%** of all reviews, focusing heavily on critical issues by replying to **99.6%** of 1-star and **99.9%** of 2-star reviews (with an average response time of 2.36 days)",
     ],
     keyResults: [
-      "Text Mining of 128,607 App Reviews: Cleaned and processed Google Play reviews using Indonesian Sastrawi stemming and NLP",
-      "K-Means Sentimental Clustering: Segmented unstructured text into 5 distinct behavioral clusters using TF-IDF weights",
-      "UX Failure Identification (2.40★ Avg Rating): Surfaced critical user crash points and BSI Mobile vs Byond migration complaints",
+      "Optimized Unique Word Stemming: Reduced Sastrawi stemming time from hours to around 30 minutes using dictionary lookup on 19,582 unique words",
+      "Outage & Critical Bug Identification: Traced the May 2023 national IT outage, device-specific crashes on Samsung A13 post-update, and SMS OTP balance loss issues",
+      "Customer Support Responsiveness Audit: Analyzed developer response rates showing a 99.86% reply rate with a priority on 1-star & 2-star reviews",
     ],
-    github: null,
+    github: "https://github.com/aryayaya11/BSI-segmentation",
     demo: null,
     liveUrl: null,
     featured: false,
@@ -587,34 +589,46 @@ filtered_df['Matrix Category'] = filtered_df.apply(
       {
         title: "Indonesian NLP Preprocessing Pipeline (Python)",
         language: "python",
-        code: `# Initialize Sastrawi stemmer for Bahasa Indonesia
-factory = StemmerFactory()
-stemmer = factory.create_stemmer()
+        code: `# 1. Kamus normalisasi slang & ekspansi stopwords kustom
+stop_words = set(stopwords.words('indonesian'))
+custom_stopwords = {'bsi', 'aplikasi', 'mobile', 'bank', 'byond', 'sih', 'deh', 'dong', 'yang', 'di', 'ke', 'dari'}
+stop_words.update(custom_stopwords)
 
-def preprocess_text(text):
-    # Lowercase and remove non-alphabetic characters
+slang_dict = {
+    'gak': 'tidak', 'ga': 'tidak', 'ngak': 'tidak', 'gk': 'tidak',
+    'yg': 'yang', 'dgn': 'dengan', 'utk': 'untuk', 'tp': 'tapi',
+    'klo': 'kalau', 'kalo': 'kalau', 'krn': 'karena',
+    'sy': 'saya', 'dr': 'dari', 'mo': 'mau', 'aja': 'saja',
+    'eror': 'error', 'tf': 'transfer', 'hp': 'handphone', 'updet': 'update'
+}
+
+# 2. Tambahkan kata dasar teknis/inggris ke kamus internal Sastrawi
+sastrawi_dict = stemmer.delegatedStemmer.dictionary
+technical_words = ['update', 'error', 'transfer', 'qris', 'byond', 'login', 'otp', 'pin', 'saldo']
+sastrawi_dict.add_words(technical_words)
+
+# 3. Preprocessing cepat menggunakan Unique Word Stemming (dictionary lookup)
+stem_mapping = {}
+for i, word in enumerate(unique_words):
+    stem_mapping[word] = stemmer.stem(word) # pre-stem kata unik saja
+
+def preprocess_text_fast(text):
     text = text.lower()
-    text = re.sub(r'[^a-zA-Z\\s]', '', text)
+    # Ekspansi kata ulang berakhiran angka 2 (tiba2 -> tiba tiba)
+    text = re.sub(r'\\b([a-zA-Z]+)2\\b', r'\\1 \\1', text)
+    # Ganti non-alfabet dengan spasi untuk mencegah kata tergabung
+    text = re.sub(r'[^a-zA-Z\\s]', ' ', text)
     text = re.sub(r'\\s+', ' ', text).strip()
+    
+    stemmed_words = []
+    for word in text.split():
+        word_normalized = slang_dict.get(word, word)
+        if word_normalized not in stop_words:
+            # Menggunakan dictionary lookup untuk performa tinggi
+            stemmed_words.append(stem_mapping.get(word_normalized, word_normalized))
+    return ' '.join(stemmed_words)
 
-    # Remove Indonesian stopwords
-    stop_words = set(stopwords.words('indonesian'))
-    words = [w for w in text.split() if w not in stop_words]
-
-    # Apply Sastrawi morphological stemming
-    stemmed = [stemmer.stem(word) for word in words]
-    return ' '.join(stemmed)
-
-df['clean_content'] = df['content'].apply(preprocess_text)
-
-# TF-IDF Vectorization
-vectorizer = TfidfVectorizer(max_features=1000, min_df=5, max_df=0.8)
-tfidf_matrix = vectorizer.fit_transform(df['clean_content'])
-# → Shape: (2000, 493)
-
-# K-Means Clustering
-kmeans = KMeans(n_clusters=5, random_state=42, n_init=10)
-df['cluster'] = kmeans.fit_predict(tfidf_matrix)`
+df['clean_content'] = df['content'].apply(preprocess_text_fast)`
       }
     ]
   },
