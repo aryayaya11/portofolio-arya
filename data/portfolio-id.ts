@@ -16,7 +16,7 @@ export const personalInfo = {
   linkedin: "www.linkedin.com/in/aryaputrapermana", // update
   github: "https://github.com/aryayaya11", // update
   instagram: "https://www.instagram.com/aryaa.puttra/", // update
-  resumeUrl: "https://drive.google.com/file/d/1RAp2M9CzoBiIUnOSvQy1L6hWjhE7BPiX/view?usp=sharing",
+  resumeUrl: "https://drive.google.com/uc?export=download&id=1RAp2M9CzoBiIUnOSvQy1L6hWjhE7BPiX",
   tagline: "Membangun solusi berbasis data melalui analitik, kepemimpinan, dan pengambilan keputusan yang berdampak.",
   about: `Sebagai mahasiswa S1 Sains Data di Universitas Airlangga, saya sangat antusias dalam menerjemahkan kumpulan data yang kompleks menjadi keputusan strategis yang berbasis bukti. Saya berkembang di persimpangan antara analitik, statistik, dan kecerdasan bisnis (BI), dengan pengalaman langsung dalam membangun model machine learning, merancang data warehouse, dan membuat dasbor interaktif.
 

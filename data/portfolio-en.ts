@@ -16,7 +16,7 @@ export const personalInfo = {
   linkedin: "www.linkedin.com/in/aryaputrapermana", // update
   github: "https://github.com/aryayaya11", // update
   instagram: "https://www.instagram.com/aryaa.puttra/", // update
-  resumeUrl: "https://drive.google.com/file/d/1RAp2M9CzoBiIUnOSvQy1L6hWjhE7BPiX/view?usp=sharing",
+  resumeUrl: "https://drive.google.com/uc?export=download&id=1RAp2M9CzoBiIUnOSvQy1L6hWjhE7BPiX",
   tagline: "Building data-driven solutions through analytics, leadership, and impactful decision making.",
   about: `As an undergraduate Data Science student at Universitas Airlangga, I am deeply passionate about translating complex datasets into strategic, evidence-based decisions. I thrive at the intersection of analytics, statistics, and business intelligence, with hands-on experience building machine learning models, designing data warehouses, and crafting interactive dashboards.
 
