@@ -443,11 +443,21 @@ export default function ProjectDetailClient({ project: initialProject, prev: ini
             transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
             className="space-y-5"
           >
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200">
+            <div className="flex items-center gap-2 flex-wrap text-[11px] sm:text-xs">
+              <span className="font-bold uppercase tracking-widest px-2.5 py-1 rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200">
                 {project.category}
               </span>
-              <span className="text-sm text-zinc-500 dark:text-zinc-400">{project.year}</span>
+              <span className="h-4 w-px bg-zinc-300 dark:bg-zinc-800 hidden sm:block" />
+              <span className="text-zinc-500 dark:text-zinc-400 font-medium px-2 py-1 rounded bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800/50">{project.year}</span>
+              <span className="h-4 w-px bg-zinc-300 dark:bg-zinc-800 hidden sm:block" />
+              <span className="text-indigo-700 dark:text-indigo-300 font-semibold px-2 py-1 rounded bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100/50 dark:border-indigo-900/20">
+                {project.projectType}
+              </span>
+              <span className="h-4 w-px bg-zinc-300 dark:bg-zinc-800 hidden sm:block" />
+              <span className="text-emerald-700 dark:text-emerald-300 font-semibold px-2 py-1 rounded bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100/50 dark:border-emerald-900/20 flex items-center gap-1">
+                {project.teamType}
+                {project.roleInGroup ? ` (${project.roleInGroup})` : ''}
+              </span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.05] text-zinc-900 dark:text-white">
@@ -545,6 +555,64 @@ export default function ProjectDetailClient({ project: initialProject, prev: ini
           <DeviceShowcase project={project} />
         </section>
         )}
+
+        {/* ── Impact & Learning Outcomes ── */}
+        <section className="space-y-6">
+          <motion.h2
+            variants={fadeUp}
+            initial="initial"
+            animate="animate"
+            transition={{ delay: 0.1, duration: 0.6 }}
+            className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white"
+          >
+            {language === 'en' ? 'Impact & Learnings' : 'Dampak & Pembelajaran'}
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Impact Card */}
+            <motion.div
+              variants={fadeUp}
+              initial="initial"
+              animate="animate"
+              transition={{ delay: 0.12, duration: 0.6 }}
+              whileHover={{ y: -6, scale: 1.01, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+              className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/30 p-6 sm:p-8 shadow-sm hover:shadow-md hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-300 group"
+            >
+              <div
+                className="absolute top-0 left-0 w-full h-[3px] opacity-70 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-emerald-500 to-teal-500"
+              />
+              <div className="space-y-4">
+                <div className="inline-flex text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-300 border border-emerald-100/50 dark:border-emerald-900/20">
+                  {language === 'en' ? 'My Personal Impact' : 'Dampak Pribadi Saya'}
+                </div>
+                <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium">
+                  {parseMarkdown(project.myImpact)}
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Learnings Card */}
+            <motion.div
+              variants={fadeUp}
+              initial="initial"
+              animate="animate"
+              transition={{ delay: 0.18, duration: 0.6 }}
+              whileHover={{ y: -6, scale: 1.01, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+              className="relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/30 p-6 sm:p-8 shadow-sm hover:shadow-md hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors duration-300 group"
+            >
+              <div
+                className="absolute top-0 left-0 w-full h-[3px] opacity-70 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-indigo-500 to-purple-500"
+              />
+              <div className="space-y-4">
+                <div className="inline-flex text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-300 border border-indigo-100/50 dark:border-indigo-900/20">
+                  {language === 'en' ? 'What I Learned' : 'Apa yang Saya Pelajari'}
+                </div>
+                <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium">
+                  {parseMarkdown(project.whatILearned)}
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
 
         {/* ── Key Outcomes ── */}
         <section className="space-y-6">

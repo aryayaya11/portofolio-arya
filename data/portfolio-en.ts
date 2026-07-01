@@ -16,7 +16,7 @@ export const personalInfo = {
   linkedin: "www.linkedin.com/in/aryaputrapermana", // update
   github: "https://github.com/aryayaya11", // update
   instagram: "https://www.instagram.com/aryaa.puttra/", // update
-  resumeUrl: "/resume.pdf",
+  resumeUrl: "https://drive.google.com/file/d/1RAp2M9CzoBiIUnOSvQy1L6hWjhE7BPiX/view?usp=sharing",
   tagline: "Building data-driven solutions through analytics, leadership, and impactful decision making.",
   about: `As an undergraduate Data Science student at Universitas Airlangga, I am deeply passionate about translating complex datasets into strategic, evidence-based decisions. I thrive at the intersection of analytics, statistics, and business intelligence, with hands-on experience building machine learning models, designing data warehouses, and crafting interactive dashboards.
 
@@ -122,6 +122,11 @@ export type Project = {
   categoryColor: string;
   accentColor: string;
   year: string;
+  projectType: string;
+  teamType: string;
+  roleInGroup?: string;
+  myImpact: string;
+  whatILearned: string;
   images: string[];
   description: string;
   tech: string[];
@@ -153,6 +158,11 @@ export const projects: Project[] = [
     categoryColor: "text-emerald-400",
     accentColor: "#16a34a",
     year: "2026",
+    projectType: "Class Assignment",
+    teamType: "Group Project",
+    roleInGroup: "UI/UX Designer & Quantitative Analyst",
+    myImpact: "Designed the R Shiny UI/UX layouts, created the interactive user interface, and formulated the rule-based quartile statistical calculations (Q3 percentile thresholds) to classify district risk tiers.",
+    whatILearned: "Learned how to implement interactive Leaflet maps, coordinate reactive data states in R Shiny, and apply Q3 percentile limits for geographic risk tiering.",
     images: [
       "/projects/aceh-landwatch/desktop/desktop-1.png",
       "/projects/aceh-landwatch/desktop/desktop-4.png",
@@ -250,6 +260,11 @@ export const projects: Project[] = [
     categoryColor: "text-blue-400",
     accentColor: "#00008F",
     year: "2026",
+    projectType: "Work Assignment",
+    teamType: "Group Project",
+    roleInGroup: "Streamlit Developer & Risk Analyst",
+    myImpact: "Designed and built the Streamlit dashboard, performed multi-dimensional risk-reward matrix analysis (GWP vs. Claims), and mapped claim risk characteristics across different lines of business.",
+    whatILearned: "Learned to apply actuarial modeling concepts to large datasets (156k+ policies) in Python, manage modular application states, and design executive-facing BI dashboards.",
     images: [
       "/projects/axa/desktop/cover.png",
       "/projects/axa/ppt/slide-1.png",
@@ -337,6 +352,11 @@ filtered_df['Matrix Category'] = filtered_df.apply(
     categoryColor: "text-amber-500",
     accentColor: "#f59e0b",
     year: "2025",
+    projectType: "Class Assignment",
+    teamType: "Group Project",
+    roleInGroup: "UI/UX Designer & Workflow Architect",
+    myImpact: "Designed the user experience (UI/UX) wireframes, structured platform interfaces, and defined the transactional user flows and class registration logic.",
+    whatILearned: "Gained hands-on experience in Pentaho Data Integration, Star Schema optimization (Fact vs Dimension tables), and multi-role authorization in Laravel.",
     images: [
       "/projects/study-buddy/desktop/desktop-1.png",
       "/projects/study-buddy/desktop/desktop-2.png",
@@ -438,6 +458,11 @@ filtered_df['Matrix Category'] = filtered_df.apply(
     categoryColor: "text-indigo-500",
     accentColor: "#6366f1",
     year: "2025",
+    projectType: "Class Assignment",
+    teamType: "Group Project",
+    roleInGroup: "Data Scraper & Playwright Specialist",
+    myImpact: "Built and optimized the asynchronous Playwright web scraping script to bypass lazy loading and dynamically extract listings of Surabaya hotels from Traveloka.",
+    whatILearned: "Mastered async scraping with Playwright, handled cluster number selection using Silhouette scores, and resolved target leakage issues in regression models.",
     images: [
       "/projects/datmin-traveloka/sebaran_harga_cluster.png",
       "/projects/datmin-traveloka/actual_vs_predicted.png",
@@ -529,6 +554,10 @@ filtered_df['Matrix Category'] = filtered_df.apply(
     categoryColor: "text-purple-400",
     accentColor: "#9333ea",
     year: "2025",
+    projectType: "Individual Project",
+    teamType: "Individual Project",
+    myImpact: "Built the entire text clustering pipeline individually, optimized text preprocessing with Unique Word Stemming to speed up stemming by 8x, and integrated domain-specific vocabulary into Sastrawi.",
+    whatILearned: "Learned Indonesian slang normalization, TF-IDF vectorizer configuration, text clustering metrics, and custom dictionary injection.",
     images: [
       "/projects/bsi-text-clustering/desktop/desktop-1.png",
       "/projects/bsi-text-clustering/desktop/desktop-2.png",
@@ -639,6 +668,11 @@ df['clean_content'] = df['content'].apply(preprocess_text_fast)`
     categoryColor: "text-sky-400",
     accentColor: "#0ea5e9",
     year: "2025",
+    projectType: "Class Assignment",
+    teamType: "Group Project",
+    roleInGroup: "Machine Learning Benchmarker",
+    myImpact: "Benchmarked and compared the performance of multiple machine learning models (XGBoost, BERT, DistilBERT) on sequence classification metrics.",
+    whatILearned: "Learned Hugging Face sequence classification APIs, fine-tuning deep learning models using PyTorch, and managing validation trade-offs between model sizes.",
     images: [
       "/projects/ai-vs-human/ppt/slide-1.jpg",
       "/projects/ai-vs-human/ppt/slide-2.jpg",

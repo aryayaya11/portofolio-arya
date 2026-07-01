@@ -16,7 +16,7 @@ export const personalInfo = {
   linkedin: "www.linkedin.com/in/aryaputrapermana", // update
   github: "https://github.com/aryayaya11", // update
   instagram: "https://www.instagram.com/aryaa.puttra/", // update
-  resumeUrl: "/resume.pdf",
+  resumeUrl: "https://drive.google.com/file/d/1RAp2M9CzoBiIUnOSvQy1L6hWjhE7BPiX/view?usp=sharing",
   tagline: "Membangun solusi berbasis data melalui analitik, kepemimpinan, dan pengambilan keputusan yang berdampak.",
   about: `Sebagai mahasiswa S1 Sains Data di Universitas Airlangga, saya sangat antusias dalam menerjemahkan kumpulan data yang kompleks menjadi keputusan strategis yang berbasis bukti. Saya berkembang di persimpangan antara analitik, statistik, dan kecerdasan bisnis (BI), dengan pengalaman langsung dalam membangun model machine learning, merancang data warehouse, dan membuat dasbor interaktif.
 
@@ -122,6 +122,11 @@ export type Project = {
   categoryColor: string;
   accentColor: string;
   year: string;
+  projectType: string;
+  teamType: string;
+  roleInGroup?: string;
+  myImpact: string;
+  whatILearned: string;
   images: string[];
   description: string;
   tech: string[];
@@ -153,6 +158,11 @@ export const projects: Project[] = [
     categoryColor: "text-emerald-400",
     accentColor: "#16a34a",
     year: "2026",
+    projectType: "Tugas Kuliah",
+    teamType: "Proyek Kelompok",
+    roleInGroup: "Desainer UI/UX & Analis Kuantitatif",
+    myImpact: "Merancang tata letak UI/UX R Shiny, mendesain antarmuka pengguna interaktif, dan memformulasikan perhitungan statistik kuartil (ambang batas persentil Q3) untuk mengklasifikasikan status tingkat risiko daerah.",
+    whatILearned: "Belajar mengimplementasikan peta Leaflet interaktif, mengoordinasikan reaktivitas state di R Shiny, dan menerapkan ambang batas persentil Q3 untuk klasifikasi wilayah.",
     images: [
       "/projects/aceh-landwatch/desktop/desktop-1.png",
       "/projects/aceh-landwatch/desktop/desktop-4.png",
@@ -250,6 +260,11 @@ export const projects: Project[] = [
     categoryColor: "text-blue-400",
     accentColor: "#00008F",
     year: "2026",
+    projectType: "Tugas Proyek Kerja",
+    teamType: "Proyek Kelompok",
+    roleInGroup: "Developer Streamlit & Analis Risiko",
+    myImpact: "Merancang dan membangun dasbor Streamlit, melakukan analisis matriks risiko-keuntungan multi-dimensi (GWP vs Klaim), serta memetakan karakteristik risiko klaim untuk setiap lini bisnis.",
+    whatILearned: "Belajar menerapkan konsep pemodelan aktuaria pada dataset besar (156k+ polis) menggunakan Python, mengelola state aplikasi modular, dan merancang dasbor BI untuk eksekutif.",
     images: [
       "/projects/axa/desktop/cover.png",
       "/projects/axa/ppt/slide-1.png",
@@ -337,6 +352,11 @@ filtered_df['Matrix Category'] = filtered_df.apply(
     categoryColor: "text-amber-500",
     accentColor: "#f59e0b",
     year: "2025",
+    projectType: "Tugas Kuliah",
+    teamType: "Proyek Kelompok",
+    roleInGroup: "Desainer UI/UX & Arsitek Alur Kerja",
+    myImpact: "Merancang konsep gambar kabel (wireframe) antarmuka platform, menyusun tata letak antarmuka pengguna (UI/UX), dan menentukan alur transaksi operasional serta pencocokan kelas.",
+    whatILearned: "Mendapatkan pengalaman praktis menggunakan Pentaho Data Integration, optimasi Star Schema (tabel Fakta vs Dimensi), serta autentikasi multi-role pada Laravel.",
     images: [
       "/projects/study-buddy/desktop/desktop-1.png",
       "/projects/study-buddy/desktop/desktop-2.png",
@@ -438,6 +458,11 @@ filtered_df['Matrix Category'] = filtered_df.apply(
     categoryColor: "text-indigo-500",
     accentColor: "#6366f1",
     year: "2025",
+    projectType: "Tugas Kuliah",
+    teamType: "Proyek Kelompok",
+    roleInGroup: "Spesialis Playwright & Data Scraper",
+    myImpact: "Membangun dan mengoptimalkan skrip scraping data web secara asinkron menggunakan Playwright untuk memintas pemuatan dinamis (lazy loading) dan mengumpulkan data akomodasi hotel di Surabaya dari Traveloka.",
+    whatILearned: "Menguasai scraping asinkron dengan Playwright, mengevaluasi jumlah klaster menggunakan Silhouette score, dan mengatasi masalah target leakage pada model regresi.",
     images: [
       "/projects/datmin-traveloka/sebaran_harga_cluster.png",
       "/projects/datmin-traveloka/actual_vs_predicted.png",
@@ -529,6 +554,10 @@ filtered_df['Matrix Category'] = filtered_df.apply(
     categoryColor: "text-purple-400",
     accentColor: "#9333ea",
     year: "2025",
+    projectType: "Proyek Mandiri",
+    teamType: "Proyek Mandiri",
+    myImpact: "Membangun seluruh pipeline klasterisasi teks secara mandiri (tugas individu), mengoptimalkan prapemrosesan teks dengan metode Unique Word Stemming untuk mempercepat stemming sebesar 8x, serta menginjeksikan kosakata perbankan ke dalam stemmer Sastrawi.",
+    whatILearned: "Belajar normalisasi slang bahasa Indonesia, konfigurasi TF-IDF, metrik klasterisasi teks, dan kustomisasi kamus Sastrawi.",
     images: [
       "/projects/bsi-text-clustering/desktop/desktop-1.png",
       "/projects/bsi-text-clustering/desktop/desktop-2.png",
@@ -639,6 +668,11 @@ df['clean_content'] = df['content'].apply(preprocess_text_fast)`
     categoryColor: "text-sky-400",
     accentColor: "#0ea5e9",
     year: "2025",
+    projectType: "Tugas Kuliah",
+    teamType: "Proyek Kelompok",
+    roleInGroup: "Pengevaluasi Model Machine Learning",
+    myImpact: "Melakukan evaluasi perbandingan performa dari beberapa model machine learning (XGBoost, BERT, DistilBERT) pada metrik-metrik evaluasi klasifikasi teks.",
+    whatILearned: "Belajar menggunakan API sequence classification Hugging Face, fine-tuning model deep learning dengan PyTorch, serta menganalisis trade-off generalisasi model.",
     images: [
       "/projects/ai-vs-human/ppt/slide-1.jpg",
       "/projects/ai-vs-human/ppt/slide-2.jpg",
