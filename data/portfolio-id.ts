@@ -32,7 +32,7 @@ Baik itu mengoptimalkan anggaran atau menganalisis data geospasial, tujuan utama
 
 export const stats = [
   { label: "Organisasi & Kepanitiaan", value: 10, suffix: "+", decimals: 0 },
-  { label: "Proyek", value: 5, suffix: "+", decimals: 0 },
+  { label: "Proyek", value: 7, suffix: "+", decimals: 0 },
   { label: "Dana Dikelola", value: 140, suffix: "Juta+", prefix: "Rp", decimals: 0 },
   { label: "Anggota Dikoordinasi", value: 500, suffix: "+", decimals: 0 },
   { label: "Program Internasional", value: 3, suffix: "+", decimals: 0 },
@@ -151,6 +151,200 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    id: "major-match",
+    title: "Major & Match — Sistem Rekomendasi Jurusan Berbasis AI",
+    category: "AI / Web Application",
+    categoryColor: "text-yellow-400",
+    accentColor: "#facc15",
+    year: "2026",
+    projectType: "Tugas Kuliah",
+    teamType: "Proyek Kelompok",
+    roleInGroup: "Frontend Developer (Next.js) & Backend Developer (Flask API)",
+    myImpact: "Membangun antarmuka Next.js dengan mekanisme swipe card dua fase bergaya Neo-Brutalism + Framer Motion, sekaligus mengembangkan seluruh REST API Flask yang menghubungkan mesin Machine Learning (TF-IDF, Rocchio, Shannon Entropy) ke database PostgreSQL dengan 10 endpoint terproteksi.",
+    whatILearned: "Belajar membangun sistem full-stack AI end-to-end: merancang arsitektur client-server yang bersih, mengintegrasikan kalkulasi ML real-time (Cosine Similarity + Shannon Entropy) ke dalam REST API, serta merancang skema database PostgreSQL untuk pencatatan data empiris beta testing akademik.",
+    images: [
+      "/projects/major-match/desktop/desktop-1.png",
+      "/projects/major-match/desktop/desktop-2.png",
+      "/projects/major-match/desktop/desktop-3.png",
+      "/projects/major-match/desktop/desktop-4.png",
+    ],
+    deviceScreenshots: {
+      desktop: [
+        "/projects/major-match/desktop/desktop-1.png",
+        "/projects/major-match/desktop/desktop-2.png",
+        "/projects/major-match/desktop/desktop-3.png",
+        "/projects/major-match/desktop/desktop-4.png",
+      ],
+      tablet: [],
+      mobile: [],
+    },
+    description: "Platform AI interaktif yang membantu pelajar SMA/SMK menemukan jurusan kuliah yang paling sesuai dengan minat mereka. Menggantikan kuesioner psikotes statis dengan antarmuka swipe card dua fase berbasis Active Learning (Shannon Entropy) — setiap kartu dipilih adaptif untuk memaksimalkan Information Gain. Dievaluasi dalam paper akademik dengan dataset 236 jurusan dan 15 skenario persona.",
+    tech: ["Next.js", "TypeScript", "Python", "Flask", "Scikit-Learn", "PostgreSQL", "Framer Motion", "Pandas"],
+    techIcons: [
+      { name: "Next.js", iconUrl: "https://cdn.simpleicons.org/nextdotjs/ffffff", color: "#ffffff" },
+      { name: "Python", iconUrl: "https://cdn.simpleicons.org/python/3776AB", color: "#3776AB" },
+      { name: "Flask", iconUrl: "https://cdn.simpleicons.org/flask/ffffff", color: "#ffffff" },
+      { name: "PostgreSQL", iconUrl: "https://cdn.simpleicons.org/postgresql/4169E1", color: "#4169E1" },
+      { name: "Scikit-Learn", iconUrl: "https://cdn.simpleicons.org/scikitlearn/F7931E", color: "#F7931E" },
+    ],
+    problem: "Pelajar SMA/SMK menghadapi ratusan pilihan jurusan dengan informasi yang tersebar dan tidak terstruktur, sementara alat bantu yang ada — kuesioner minat statis berbasis RIASEC dengan puluhan pertanyaan tetap — tidak beradaptasi terhadap jawaban yang sudah diberikan, terasa panjang, repetitif, dan berisiko ditinggalkan sebelum selesai. Tidak ada sistem yang secara adaptif mempelajari preferensi pengguna **secara real-time** untuk merekomendasikan jurusan berdasarkan minat sejati.",
+    action: [
+      "Membangun **antarmuka swipe card dua fase** di Next.js + Framer Motion bergaya Neo-Brutalism: Fase 1 (20 kartu RIASEC pembuka) → layar transisi distribusi rumpun minat → Fase 2 (10 kartu eksplorasi adaptif)",
+      "Mengembangkan **10 REST API endpoint Flask** (terproteksi Flask-Limiter + Marshmallow) yang menjembatani frontend dengan ML engine: `/api/next-card`, `/api/recommend`, `/api/question-response`, `/api/explore`, `/api/stats`, dll.",
+      "Mengintegrasikan **kalkulasi ML real-time** di backend: Cosine Similarity antar vektor TF-IDF, pembaruan profil via Rocchio Feedback Algorithm, dan pemilihan kartu via Shannon Entropy Active Learning pada setiap swipe",
+      "Menerapkan **Epsilon-Greedy exploration (15%)** di backend untuk mencegah filter bubble, dengan sesekali menyajikan kartu dari rumpun bidang minat yang belum dijelajahi pengguna",
+      "Merancang **skema database PostgreSQL 5 tabel** untuk Beta Testing Ekstensif: UserProfile, QuestionResponse (dengan `response_time_ms`), RecommendationResult, RecommendationFeedback, SessionEvaluation",
+      "Mengimplementasikan **halaman eksplorasi 236 jurusan**, halaman detail prospek karier & gaji per jurusan, dan dashboard statistik admin real-time (dilindungi header `X-Admin-Key`)",
+      "Mendukung evaluasi paper: sistem diuji pada **15 skenario persona simulasi** untuk membandingkan tiga metode pemeringkatan (TF-IDF, Hybrid, Semantic/LSA) menggunakan metrik Precision@3, Recall@3, dan F1-Score@3",
+    ],
+    result: [
+      "**Metode Hybrid** (TF-IDF 60% + profil kategori eksplisit 40%) mencapai performa terbaik: **Precision@3 = 1.000**, Recall@3 = 0.188, F1-Score = 0.293 — mengungguli TF-IDF murni (P@3=0.867) dan Semantic/LSA (P@3=0.889)",
+      "Antarmuka **swipe card dua fase** berhasil menyajikan rekomendasi Top 3 jurusan lengkap dengan skor kecocokan, alasan rekomendasi berbasis pertanyaan yang dijawab positif, daftar keahlian cocok, dan prospek karier",
+      "**Skema Beta Testing granular** berhasil mencatat jejak interaksi empiris per sesi pengguna (termasuk `response_time_ms` per kartu) yang siap diekspor ke CSV untuk analisis akademik",
+      "EDA mengungkap **cross-category lexical noise** pada TF-IDF — frasa generik seperti 'kemampuan komunikasi' muncul di 86/236 jurusan lintas 15 kategori, menjadi motivasi utama adopsi skema Hybrid",
+      "Sistem berhasil **di-deploy** ke Railway Cloud (PostgreSQL) + Vercel (frontend) dengan arsitektur client-server yang mendukung konkurensi multi-user Beta Testing",
+    ],
+    keyResults: [
+      "Hybrid Scoring Precision@3 = 1.000: Kombinasi TF-IDF + profil kategori eksplisit mencapai presisi sempurna pada 15 skenario persona dibanding TF-IDF murni dan LSA",
+      "Active Learning Real-Time via Shannon Entropy: Setiap kartu dipilih adaptif berdasarkan Information Gain tertinggi, memaksimalkan efisiensi eksplorasi minat dengan jumlah pertanyaan minimal",
+      "Full-Stack AI Platform: Frontend swipe card Next.js + Backend Flask API 10 endpoint + PostgreSQL Beta Testing schema terintegrasi penuh dalam satu sistem",
+    ],
+    github: "https://github.com/aryayaya11/major-match",
+    demo: null,
+    liveUrl: null,
+    featured: true,
+    gradient: "from-yellow-600/20 via-amber-600/10 to-transparent",
+    icon: "🎓",
+    codeSnippets: [
+      {
+        title: "Flask API — /api/next-card (Active Learning Endpoint)",
+        language: "python",
+        code: `@api_bp.route('/next-card', methods=['POST'])
+@limiter.limit("60 per minute")
+def get_next_card():
+    """Endpoint utama Active Learning: terima riwayat swipe, kembalikan kartu optimal."""
+    payload = schema.load(request.json)  # Marshmallow validation
+    history = payload['history']  # [{card_id, response: 'like'|'skip'}, ...]
+    answered_ids = {h['card_id'] for h in history}
+
+    # 1. Bangun vektor profil user dari riwayat swipe via Rocchio
+    user_vector = ml_service.build_user_vector(history)
+
+    # 2. Active Learning: pilih kartu dengan Shannon Entropy tertinggi
+    candidates = [c for c in ALL_CARDS if c['id'] not in answered_ids]
+    best_card = ml_service.select_next_card_entropy(
+        user_vector, candidates, answered_ids
+    )
+
+    # 3. Epsilon-Greedy: 15% peluang eksplorasi anti filter-bubble
+    explored_rumpun = ml_service.get_explored_rumpun(history)
+    if random.random() < EPSILON_EXPLORATION:
+        unexplored = [c for c in candidates
+                      if c['rumpun'] not in explored_rumpun]
+        if unexplored:
+            best_card = random.choice(unexplored)
+
+    return jsonify({'card': best_card, 'session_id': payload['session_id']})`
+      }
+    ]
+  },
+  {
+    id: "washtrack",
+    title: "WashTrack — Platform Smart Laundry Tracking",
+    category: "Web Application",
+    categoryColor: "text-cyan-400",
+    accentColor: "#06b6d4",
+    year: "2026",
+    projectType: "Tugas Kuliah",
+    teamType: "Proyek Kelompok",
+    roleInGroup: "Pengembang Website (Next.js)",
+    myImpact: "Membangun seluruh platform WashTrack berbasis Next.js — mulai dari desain UI/UX, alur kerja dashboard kasir, QR Code scanner kustom berbasis jsQR, notifikasi WhatsApp otomatis, struk digital interaktif, hingga sinkronisasi status real-time antar tab browser menggunakan StorageEvent API.",
+    whatILearned: "Belajar mengimplementasikan real-time state synchronization menggunakan StorageEvent API, decoding QR Code langsung di browser dengan jsQR, serta membangun alur kerja dua sisi (kasir dan pelanggan) dalam satu aplikasi Next.js App Router.",
+    images: [
+      "/projects/washtrack/desktop/desktop-1.png",
+      "/projects/washtrack/desktop/desktop-5.png",
+      "/projects/washtrack/desktop/desktop-4.png",
+      "/projects/washtrack/desktop/desktop-3.png",
+    ],
+    deviceScreenshots: {
+      desktop: [
+        "/projects/washtrack/desktop/desktop-1.png",
+        "/projects/washtrack/desktop/desktop-2.png",
+        "/projects/washtrack/desktop/desktop-5.png",
+        "/projects/washtrack/desktop/desktop-4.png",
+        "/projects/washtrack/desktop/desktop-3.png",
+      ],
+      tablet: [],
+      mobile: [],
+    },
+    description: "Platform Smart Laundry berbasis web yang dikembangkan berdasarkan hasil data mining terhadap 554 tweet keluhan pengguna laundry di media sosial X (Twitter). WashTrack menyediakan pelacakan status laundry real-time, notifikasi WhatsApp otomatis, QR Code tracking, dan dashboard kasir terintegrasi sebagai solusi digitalisasi usaha laundry UMKM.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "jsQR", "qrcode.react", "LocalStorage API"],
+    techIcons: [
+      { name: "Next.js", iconUrl: "https://cdn.simpleicons.org/nextdotjs/ffffff", color: "#ffffff" },
+      { name: "TypeScript", iconUrl: "https://cdn.simpleicons.org/typescript/3178C6", color: "#3178C6" },
+      { name: "Tailwind CSS", iconUrl: "https://cdn.simpleicons.org/tailwindcss/06B6D4", color: "#06B6D4" },
+      { name: "Framer Motion", iconUrl: "https://cdn.simpleicons.org/framer/0055FF", color: "#0055FF" },
+      { name: "React", iconUrl: "https://cdn.simpleicons.org/react/61DAFB", color: "#61DAFB" },
+    ],
+    problem: "Berdasarkan data mining terhadap **554 tweet bersih dari media sosial X (Twitter)**, ditemukan **173 tweet (31,6%)** merupakan keluhan layanan laundry konvensional. Keluhan terbesar: **kualitas cucian buruk (25,73%)**, **keterlambatan penyelesaian (21,05%)**, **barang hilang/kurang (15,20%)**, harga (13,45%), dan lupa mengambil laundry (12,28%). Akar masalah: belum adanya sistem digital yang mengintegrasikan pencatatan transaksi, pemantauan status, dan komunikasi pelanggan dalam satu platform.",
+    action: [
+      "Merancang **arsitektur platform WashTrack berbasis Next.js App Router** dengan 3 portal: Dashboard Kasir (`/dashboard`), Portal Tracking Mandiri Pelanggan (`/track`), dan Struk Digital (`/pay/[id]`)",
+      "Mengimplementasikan **alur status laundry dinamis** yang menyesuaikan tahapan otomatis berdasarkan jenis layanan pilihan (Cuci Setrika → 5 tahap, Setrika Saja → 3 tahap, Cuci/Cuci Lipat → 4 tahap)",
+      "Membangun **QR Code Scanner kustom berbasis jsQR** dengan optimasi downscaling frame kamera untuk performa tinggi di perangkat low-end, dilengkapi anti double-firing 1,5 detik",
+      "Mengintegrasikan **notifikasi WhatsApp otomatis dua arah** menggunakan deep link API dengan format emoji-safe (`String.fromCodePoint`) — sebagai respons langsung atas insight riset tim: keterlambatan & minimnya informasi status laundry",
+      "Menerapkan **sinkronisasi status real-time antar tab browser** menggunakan LocalStorage + StorageEvent API tanpa backend tambahan, memungkinkan pelanggan memantau progres cucian secara live",
+      "Mengembangkan **struk digital interaktif** (`/pay/[id]`) dengan progress bar animasi Framer Motion, simulasi pembayaran QRIS, dan QR Code unik per pesanan menggunakan qrcode.react",
+      "Merancang **Dashboard Kasir 6 sub-halaman** (Dashboard, Pesanan, Scan QR, Pelanggan, Notifikasi, Pendapatan) dengan kalkulasi biaya otomatis dan validasi input real-time",
+    ],
+    result: [
+      "Platform berhasil mengimplementasikan **alur kerja kasir end-to-end** — dari input order, update status bertahap, hingga konfirmasi pengambilan melalui scan QR",
+      "Pelanggan dapat **memantau status cucian secara real-time** dari ponsel tanpa perlu mengunduh aplikasi atau membuat akun",
+      "**Notifikasi WhatsApp otomatis dua arah** berhasil diimplementasikan: saat order masuk (tanda terima + link tracking) dan saat cucian siap diambil (konfirmasi + QRIS)",
+      "QR Scanner kustom berhasil berjalan **tanpa library berat** — jsQR + downscaling frame mempertahankan akurasi decode bahkan di perangkat low-end",
+      "Status laundry tersinkronisasi **secara instan antar tab browser** via StorageEvent API, membuktikan arsitektur serverless tanpa WebSocket",
+      "Website dibangun langsung dari **kebutuhan nyata hasil riset tim** (data mining 554 tweet X/Twitter), memastikan setiap fitur menjawab keluhan pengguna laundry yang teridentifikasi",
+    ],
+    keyResults: [
+      "QR Code Scanner Kustom Tanpa Library Berat: Membangun decoder kamera berbasis jsQR dengan downscaling cerdas untuk performa tinggi di perangkat low-end",
+      "Notifikasi WhatsApp Otomatis Dua Arah: Mengintegrasikan deep link API dengan template pesan emoji-safe untuk tanda terima order & konfirmasi siap ambil",
+      "Real-Time Cross-Tab Status Sync: Menerapkan sinkronisasi live tanpa WebSocket menggunakan StorageEvent API, memungkinkan pelanggan pantau cucian dari jarak jauh",
+    ],
+    github: "https://github.com/aryayaya11/washtrack",
+    demo: null,
+    liveUrl: null,
+    featured: false,
+    gradient: "from-cyan-600/20 via-sky-600/10 to-transparent",
+    icon: "🧺",
+    codeSnippets: [
+      {
+        title: "Real-Time Cross-Tab Status Sync (LocalStorage + StorageEvent)",
+        language: "typescript",
+        code: `// Kasir update status → otomatis broadcast ke semua tab pelanggan
+const updateOrderStatus = (orderId: string, newStatus: string) => {
+  const orders = getOrders();
+  const updated = orders.map(o =>
+    o.id === orderId ? { ...o, status: newStatus } : o
+  );
+  localStorage.setItem('washtrack_orders', JSON.stringify(updated));
+  // StorageEvent ter-broadcast ke semua tab yang membuka /pay/[id]
+};
+
+// Halaman struk pelanggan (/pay/[id]) — listen perubahan real-time
+useEffect(() => {
+  const handleStorageChange = (e: StorageEvent) => {
+    if (e.key === 'washtrack_orders') {
+      const orders = JSON.parse(e.newValue || '[]');
+      const current = orders.find((o: Order) => o.id === orderId);
+      if (current) setOrder(current); // Update UI secara instan
+    }
+  };
+  window.addEventListener('storage', handleStorageChange);
+  return () => window.removeEventListener('storage', handleStorageChange);
+}, [orderId]);`
+      }
+    ]
+  },
   {
     id: "aceh-landwatch",
     title: "Aceh LandWatch Dashboard",
@@ -766,7 +960,7 @@ export const skills = {
   Programming: {
     icon: "💻",
     color: "from-blue-500 to-indigo-500",
-    items: ["Python", "SQL", "TypeScript"],
+    items: ["Python", "SQL", "TypeScript", "R"],
   },
   "Data Analytics": {
     icon: "📊",
@@ -781,7 +975,7 @@ export const skills = {
   "Machine Learning": {
     icon: "🤖",
     color: "from-violet-500 to-purple-500",
-    items: ["Klasifikasi", "Regresi", "Klasterisasi", "Evaluasi Model"],
+    items: ["Scikit-Learn", "Pandas", "Klasifikasi", "Regresi", "Klasterisasi", "Evaluasi Model"],
   },
   "Business Intelligence": {
     icon: "📈",
@@ -796,7 +990,7 @@ export const skills = {
   Tools: {
     icon: "🛠️",
     color: "from-cyan-500 to-sky-500",
-    items: ["Git", "GitHub", "Streamlit", "Excel", "Canva"],
+    items: ["Next.js", "Flask", "Tailwind CSS", "Git", "GitHub", "Streamlit", "Excel", "Canva"],
   },
   "Soft Skills": {
     icon: "🌟",

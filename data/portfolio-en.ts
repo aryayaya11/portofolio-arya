@@ -32,7 +32,7 @@ Whether it's optimizing budgets or analyzing geospatial data, my ultimate goal i
 
 export const stats = [
   { label: "Organizations & Committees", value: 10, suffix: "+", decimals: 0 },
-  { label: "Projects", value: 5, suffix: "+", decimals: 0 },
+  { label: "Projects", value: 7, suffix: "+", decimals: 0 },
   { label: "Funds Managed", value: 140, suffix: "M+", prefix: "Rp", decimals: 0 },
   { label: "Members Coordinated", value: 500, suffix: "+", decimals: 0 },
   { label: "International Programs", value: 3, suffix: "+", decimals: 0 },
@@ -151,6 +151,200 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    id: "major-match",
+    title: "Major & Match — AI-Powered Major Recommendation System",
+    category: "AI / Web Application",
+    categoryColor: "text-yellow-400",
+    accentColor: "#facc15",
+    year: "2026",
+    projectType: "Course Project",
+    teamType: "Group Project",
+    roleInGroup: "Frontend Developer (Next.js) & Backend Developer (Flask API)",
+    myImpact: "Built the Next.js interface featuring a two-phase swipe card mechanic (Neo-Brutalism + Framer Motion) and engineered the entire Flask REST API containing 10 secure endpoints connecting the ML models to the PostgreSQL database.",
+    whatILearned: "Learned to build a full-stack AI platform: designing clean client-server architecture, integrating real-time ML computations (Cosine Similarity + Shannon Entropy) into a REST API, and modeling a PostgreSQL database schema to store granular beta testing research data.",
+    images: [
+      "/projects/major-match/desktop/desktop-1.png",
+      "/projects/major-match/desktop/desktop-2.png",
+      "/projects/major-match/desktop/desktop-3.png",
+      "/projects/major-match/desktop/desktop-4.png",
+    ],
+    deviceScreenshots: {
+      desktop: [
+        "/projects/major-match/desktop/desktop-1.png",
+        "/projects/major-match/desktop/desktop-2.png",
+        "/projects/major-match/desktop/desktop-3.png",
+        "/projects/major-match/desktop/desktop-4.png",
+      ],
+      tablet: [],
+      mobile: [],
+    },
+    description: "An interactive AI platform that helps high school students discover college majors aligned with their interests. Replaces static questionnaires with a Tinder-style swipe card interface driven by Shannon Entropy Active Learning, maximizing Information Gain. Evaluated in an academic paper with a 236-major dataset and 15 simulated personas.",
+    tech: ["Next.js", "TypeScript", "Python", "Flask", "Scikit-Learn", "PostgreSQL", "Framer Motion", "Pandas"],
+    techIcons: [
+      { name: "Next.js", iconUrl: "https://cdn.simpleicons.org/nextdotjs/ffffff", color: "#ffffff" },
+      { name: "Python", iconUrl: "https://cdn.simpleicons.org/python/3776AB", color: "#3776AB" },
+      { name: "Flask", iconUrl: "https://cdn.simpleicons.org/flask/ffffff", color: "#ffffff" },
+      { name: "PostgreSQL", iconUrl: "https://cdn.simpleicons.org/postgresql/4169E1", color: "#4169E1" },
+      { name: "Scikit-Learn", iconUrl: "https://cdn.simpleicons.org/scikitlearn/F7931E", color: "#F7931E" },
+    ],
+    problem: "High school students face hundreds of unstructured major options with limited counsel, while existing tools — static questionnaires with dozens of fixed questions — fail to adapt to responses, leading to high abandonment rates. No system existed to adaptively learn user preferences in real-time to recommend majors based on genuine interests.",
+    action: [
+      "Built a **two-phase swipe card interface** in Next.js + Framer Motion with Neo-Brutalism styling: Phase 1 (20 RIASEC cards) → interest group distribution transition → Phase 2 (10 adaptive exploration cards)",
+      "Developed **10 Flask REST API endpoints** (protected by Flask-Limiter & Marshmallow) connecting client UI to ML engine: `/api/next-card`, `/api/recommend`, `/api/question-response`, `/api/explore`, `/api/stats`, etc.",
+      "Integrated **real-time ML computations** on the backend: Cosine Similarity over TF-IDF vectors, Rocchio feedback profiles, and Shannon Entropy Active Learning selection per card swipe",
+      "Applied **Epsilon-Greedy exploration (15%)** in Flask to counter filter bubbles by forcing occasional recommendations from unexplored domains",
+      "Designed a **5-table PostgreSQL database schema** for extensive Beta Testing: UserProfile, QuestionResponse (capturing `response_time_ms`), RecommendationResult, RecommendationFeedback, SessionEvaluation",
+      "Created a **236-major exploration library**, career & salary detail pages, and a real-time admin metrics dashboard secured by `X-Admin-Key` header",
+      "Assisted paper evaluation: tested system across **15 simulated persona scenarios** comparing TF-IDF, Hybrid, and Semantic (LSA) methods using Precision@3, Recall@3, and F1-Score@3 metrics",
+    ],
+    result: [
+      "**Hybrid method** (TF-IDF 60% + explicit category profiles 40%) performed best: **Precision@3 = 1.000**, Recall@3 = 0.188, F1-Score = 0.293 — outperforming TF-IDF baseline (P@3=0.867) and LSA (P@3=0.889)",
+      "Antarmuka **swipe card** successfully delivered Top 3 recommendations complete with match confidence, positive-response rationale, required skills, and career outlooks",
+      "**Granular Beta Testing schema** captured milliseconds of user thinking time per question, stored and ready for export to CSV for academic thesis analyses",
+      "EDA highlighted **cross-category lexical noise** in TF-IDF (generic phrases like 'communication skill' appearing across 86/236 majors), motivating the Hybrid category boost implementation",
+      "Deployed system to Vercel (frontend) and Railway Cloud (PostgreSQL + Flask API), proving robust client-server concurrency during Beta Testing",
+    ],
+    keyResults: [
+      "Hybrid Scoring Precision@3 = 1.000: Combining lexical matching with explicit category weights yielded perfect precision across simulated personas",
+      "Active Learning via Shannon Entropy: Card selection dynamically optimizes for maximum Information Gain, resolving interest mapping in minimal interactions",
+      "Full-Stack AI Platform: Next.js frontend + Flask API + PostgreSQL database schema fully integrated and deployed",
+    ],
+    github: "https://github.com/aryayaya11/major-match",
+    demo: null,
+    liveUrl: null,
+    featured: true,
+    gradient: "from-yellow-600/20 via-amber-600/10 to-transparent",
+    icon: "🎓",
+    codeSnippets: [
+      {
+        title: "Flask API — /api/next-card (Active Learning Endpoint)",
+        language: "python",
+        code: `@api_bp.route('/next-card', methods=['POST'])
+@limiter.limit("60 per minute")
+def get_next_card():
+    """Main Active Learning endpoint: receives swipe history, returns optimal card."""
+    payload = schema.load(request.json)  # Marshmallow validation
+    history = payload['history']  # [{card_id, response: 'like'|'skip'}, ...]
+    answered_ids = {h['card_id'] for h in history}
+
+    # 1. Build user profile vector from swipe history via Rocchio
+    user_vector = ml_service.build_user_vector(history)
+
+    # 2. Active Learning: select card with highest Shannon Entropy
+    candidates = [c for c in ALL_CARDS if c['id'] not in answered_ids]
+    best_card = ml_service.select_next_card_entropy(
+        user_vector, candidates, answered_ids
+    )
+
+    # 3. Epsilon-Greedy: 15% exploration probability to counter filter-bubble
+    explored_rumpun = ml_service.get_explored_rumpun(history)
+    if random.random() < EPSILON_EXPLORATION:
+        unexplored = [c for c in candidates
+                      if c['rumpun'] not in explored_rumpun]
+        if unexplored:
+            best_card = random.choice(unexplored)
+
+    return jsonify({'card': best_card, 'session_id': payload['session_id']})`
+      }
+    ]
+  },
+  {
+    id: "washtrack",
+    title: "WashTrack — Smart Laundry Tracking Platform",
+    category: "Web Application",
+    categoryColor: "text-cyan-400",
+    accentColor: "#06b6d4",
+    year: "2026",
+    projectType: "Course Project",
+    teamType: "Group Project",
+    roleInGroup: "Website Developer (Next.js)",
+    myImpact: "Built the entire WashTrack platform in Next.js — from UI/UX design and cashier dashboard workflow to a custom jsQR-based QR Code scanner, automated WhatsApp notifications, interactive digital receipt, and real-time cross-tab status synchronization using the StorageEvent API.",
+    whatILearned: "Learned to implement real-time state synchronization using the StorageEvent API, in-browser QR Code decoding with jsQR, and how to architect a two-sided workflow (cashier and customer) within a single Next.js App Router application.",
+    images: [
+      "/projects/washtrack/desktop/desktop-1.png",
+      "/projects/washtrack/desktop/desktop-5.png",
+      "/projects/washtrack/desktop/desktop-4.png",
+      "/projects/washtrack/desktop/desktop-3.png",
+    ],
+    deviceScreenshots: {
+      desktop: [
+        "/projects/washtrack/desktop/desktop-1.png",
+        "/projects/washtrack/desktop/desktop-2.png",
+        "/projects/washtrack/desktop/desktop-5.png",
+        "/projects/washtrack/desktop/desktop-4.png",
+        "/projects/washtrack/desktop/desktop-3.png",
+      ],
+      tablet: [],
+      mobile: [],
+    },
+    description: "A data-driven Smart Laundry platform built from social media mining of 554 clean tweets from X (Twitter). WashTrack provides real-time laundry status tracking, automated WhatsApp notifications, QR Code tracking, and an integrated cashier dashboard as a digital solution for UMKM-scale laundry businesses.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "jsQR", "qrcode.react", "LocalStorage API"],
+    techIcons: [
+      { name: "Next.js", iconUrl: "https://cdn.simpleicons.org/nextdotjs/ffffff", color: "#ffffff" },
+      { name: "TypeScript", iconUrl: "https://cdn.simpleicons.org/typescript/3178C6", color: "#3178C6" },
+      { name: "Tailwind CSS", iconUrl: "https://cdn.simpleicons.org/tailwindcss/06B6D4", color: "#06B6D4" },
+      { name: "Framer Motion", iconUrl: "https://cdn.simpleicons.org/framer/0055FF", color: "#0055FF" },
+      { name: "React", iconUrl: "https://cdn.simpleicons.org/react/61DAFB", color: "#61DAFB" },
+    ],
+    problem: "Data mining of **554 clean tweets from X (Twitter)** revealed that **173 tweets (31.6%)** contained complaints about conventional laundry services. The top complaints: **poor wash quality (25.73%)**, **late completion (21.05%)**, **lost/missing items (15.20%)**, high pricing (13.45%), and forgetting to pick up laundry (12.28%). Root cause: no digital system exists that integrates transaction recording, status tracking, and customer communication in one platform.",
+    action: [
+      "Designed the **WashTrack platform architecture with Next.js App Router** — 3 portals: Cashier Dashboard (`/dashboard`), Customer Self-Tracking Portal (`/track`), and Digital Receipt (`/pay/[id]`)",
+      "Implemented a **dynamic laundry status workflow** that auto-adjusts stages based on service type (Wash & Iron → 5 stages, Iron Only → 3 stages, Wash/Fold → 4 stages)",
+      "Built a **custom jsQR-based camera QR Code scanner** with smart frame downscaling for high performance on low-end devices, including a 1.5-second anti-double-firing cooldown",
+      "Integrated **two-way automated WhatsApp notifications** via deep link API with emoji-safe formatting (`String.fromCodePoint`) — directly responding to the team's research findings on late completions & lack of status updates",
+      "Implemented **real-time cross-tab status synchronization** using LocalStorage + StorageEvent API — no backend required — so customers can monitor laundry progress live from any device",
+      "Developed an **interactive digital receipt** (`/pay/[id]`) with Framer Motion animated progress bars, QRIS payment simulation, and unique per-order QR Codes via qrcode.react",
+      "Designed a **6-page Cashier Dashboard** (Dashboard, Orders, Scan QR, Customers, Notifications, Revenue) with automatic cost calculation and real-time input validation",
+    ],
+    result: [
+      "Platform delivered a **complete cashier-side end-to-end workflow** — from order entry and step-by-step status updates to pickup confirmation via QR scan",
+      "Customers can **monitor laundry status in real-time** from their phones without downloading an app or creating an account",
+      "**Two-way automated WhatsApp notifications** were successfully implemented: on order entry (receipt + tracking link) and when laundry is ready for pickup (confirmation + QRIS)",
+      "Custom QR scanner runs **without heavy libraries** — jsQR + frame downscaling maintains decode accuracy even on low-end devices",
+      "Laundry status synchronizes **instantly across browser tabs** via StorageEvent API, proving a serverless architecture without WebSocket",
+      "The website was built directly from **real user needs uncovered by the team's research** (mining 554 X/Twitter tweets), ensuring every feature addresses an identified complaint",
+    ],
+    keyResults: [
+      "Custom QR Scanner Without Heavy Libraries: Built a jsQR-based camera decoder with smart downscaling for high performance on low-end devices",
+      "Two-Way Automated WhatsApp Notifications: Integrated deep link API with emoji-safe message templates for order receipts & pickup confirmations",
+      "Real-Time Cross-Tab Status Sync: Implemented live synchronization without WebSocket using StorageEvent API, letting customers track laundry remotely",
+    ],
+    github: "https://github.com/aryayaya11/washtrack",
+    demo: null,
+    liveUrl: null,
+    featured: false,
+    gradient: "from-cyan-600/20 via-sky-600/10 to-transparent",
+    icon: "🧺",
+    codeSnippets: [
+      {
+        title: "Real-Time Cross-Tab Status Sync (LocalStorage + StorageEvent)",
+        language: "typescript",
+        code: `// Cashier updates order status → auto-broadcasts to all customer tabs
+const updateOrderStatus = (orderId: string, newStatus: string) => {
+  const orders = getOrders();
+  const updated = orders.map(o =>
+    o.id === orderId ? { ...o, status: newStatus } : o
+  );
+  localStorage.setItem('washtrack_orders', JSON.stringify(updated));
+  // StorageEvent broadcasts to all tabs with /pay/[id] open
+};
+
+// Customer receipt page (/pay/[id]) — listen for real-time updates
+useEffect(() => {
+  const handleStorageChange = (e: StorageEvent) => {
+    if (e.key === 'washtrack_orders') {
+      const orders = JSON.parse(e.newValue || '[]');
+      const current = orders.find((o: Order) => o.id === orderId);
+      if (current) setOrder(current); // Instantly update UI
+    }
+  };
+  window.addEventListener('storage', handleStorageChange);
+  return () => window.removeEventListener('storage', handleStorageChange);
+}, [orderId]);`
+      }
+    ]
+  },
   {
     id: "aceh-landwatch",
     title: "Aceh LandWatch Dashboard",
@@ -766,7 +960,7 @@ export const skills = {
   Programming: {
     icon: "💻",
     color: "from-blue-500 to-indigo-500",
-    items: ["Python", "SQL", "TypeScript"],
+    items: ["Python", "SQL", "TypeScript", "R"],
   },
   "Data Analytics": {
     icon: "📊",
@@ -781,7 +975,7 @@ export const skills = {
   "Machine Learning": {
     icon: "🤖",
     color: "from-violet-500 to-purple-500",
-    items: ["Classification", "Regression", "Clustering", "Model Evaluation"],
+    items: ["Scikit-Learn", "Pandas", "Classification", "Regression", "Clustering", "Model Evaluation"],
   },
   "Business Intelligence": {
     icon: "📈",
@@ -796,7 +990,7 @@ export const skills = {
   Tools: {
     icon: "🛠️",
     color: "from-cyan-500 to-sky-500",
-    items: ["Git", "GitHub", "Streamlit", "Excel", "Canva"],
+    items: ["Next.js", "Flask", "Tailwind CSS", "Git", "GitHub", "Streamlit", "Excel", "Canva"],
   },
   "Soft Skills": {
     icon: "🌟",

@@ -15,7 +15,7 @@ export default function Footer() {
           </div>
           <div className="text-xs text-zinc-400 dark:text-zinc-500 flex items-center gap-1.5 sm:mt-0 mt-1">
             <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]"></span>
-            {language === 'en' ? 'Last updated: June 14, 2026' : 'Terakhir diperbarui: 14 Juni 2026'}
+            {language === 'en' ? 'Last updated: July 8, 2026' : 'Terakhir diperbarui: 8 Juli 2026'}
           </div>
         </div>
       </div>

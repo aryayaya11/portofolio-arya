@@ -7,9 +7,10 @@ import { useLanguage } from "@/components/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-const FILTERS = ["All", "Geospatial Analytics", "Insurance Analytics", "Predictive Analytics", "Business Intelligence", "NLP & Text Mining", "Machine Learning"];
+const FILTERS = ["All", "Web Application", "Geospatial Analytics", "Insurance Analytics", "Predictive Analytics", "Business Intelligence", "NLP & Text Mining", "Machine Learning"];
 const FILTER_LABELS: Record<string, string> = {
   "All": "All",
+  "Web Application": "Web App",
   "Geospatial Analytics": "Geospatial",
   "Insurance Analytics": "Insurance",
   "Predictive Analytics": "Analytics",
@@ -57,7 +58,12 @@ export default function Projects() {
 
   const filtered = activeFilter === "All"
     ? projects
-    : projects.filter((p) => p.category === activeFilter);
+    : projects.filter((p) => {
+        if (activeFilter === "Web Application") {
+          return p.category === "Web Application" || p.category === "AI / Web Application";
+        }
+        return p.category === activeFilter;
+      });
 
   return (
     <section id="projects" className="min-h-screen flex flex-col justify-center py-24 bg-zinc-50 dark:bg-zinc-900 transition-colors duration-300">
